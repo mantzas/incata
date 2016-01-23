@@ -1,0 +1,6 @@
+package: github.com/mantzas/golinear
+import:
+- package: github.com/twinj/uuid
+- package: github.com/mantzas/adaptlog
+  vcs: git
+  version: ^1.0.0

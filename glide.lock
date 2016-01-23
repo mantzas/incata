@@ -1,0 +1,9 @@
+hash: 9354b1691b32c8b33fe05a72f789b6c6466c145ea04bd91a711df740dbfc650d
+updated: 2016-01-23T11:05:19.3717972+02:00
+imports:
+- name: github.com/mantzas/adaptlog
+  version: 4cd3e607c39b91349a55ffec2a7edc00029676ff
+  vcs: git
+- name: github.com/twinj/uuid
+  version: 89173bcdda19db0eb88aef1e1cb1cb2505561d31
+devImports: []
