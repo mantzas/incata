@@ -1,5 +1,5 @@
 hash: 9354b1691b32c8b33fe05a72f789b6c6466c145ea04bd91a711df740dbfc650d
-updated: 2016-01-23T11:05:19.3717972+02:00
+updated: 2016-01-23T12:13:41.6411689+02:00
 imports:
 - name: github.com/mantzas/adaptlog
   version: 4cd3e607c39b91349a55ffec2a7edc00029676ff
