@@ -6,7 +6,7 @@ import "errors"
 // DbType defines the type of the db
 type DbType int
 
-// MsSQL MS SQL Server Type
+// Relational Db Types
 const (
 	MsSQL      DbType = iota // MS SQL Server
 	Postgresql               // Postgresql
