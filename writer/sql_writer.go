@@ -12,7 +12,7 @@ type SQLWriter struct {
 	Serializer serializer.Serializer
 }
 
-// NewSQLWriter creates a new memory writer
+// NewSQLWriter creates a new sql writer
 func NewSQLWriter(db *relational.Db, ser serializer.Serializer) *SQLWriter {
 
 	return &SQLWriter{
