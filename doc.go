@@ -1,5 +1,5 @@
 /*
-Package golinear is a source eventing data access package
+Package golinear is a source eventing data access library
 
   package main
   
