@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	_ "github.com/denisenkom/go-mssqldb"
+	//_ "github.com/denisenkom/go-mssqldb"
 	_ "github.com/lib/pq"
 	"github.com/mantzas/golinear/model"
 	"github.com/mantzas/golinear/relational"
