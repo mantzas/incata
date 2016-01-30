@@ -19,16 +19,16 @@ type Db struct {
 	AppendStatement string
 }
 
-// Prepare prepare sql statement for execution
-func (db *Db) Prepare(query string) (stmt *sql.Stmt, err error) {
-	stmt, err = db.innerDb.Prepare(query)
-	return
-}
-
 // Close close db
 func (db *Db) Close() (err error) {
 	err = db.innerDb.Close()
 	return
+}
+
+// Exec excutes a SQL statement
+func (db *Db) Exec(query string, args ...interface{}) (sql.Result, error) {
+	result, err := db.innerDb.Exec(query, args...)
+	return result, err
 }
 
 // NewDb return a new MS SQL Server Db object

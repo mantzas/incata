@@ -29,17 +29,7 @@ func (writer *SQLWriter) Write(event model.Event) error {
 	if err != nil {
 		return err
 	}
-
-	stmt, err := writer.Db.Prepare(writer.Db.AppendStatement)
-	if err != nil {
-		return err
-	}
-	_, err = stmt.Exec(event.SourceID.String(), event.Created, event.EventType, event.Version, payloadText)
-	if err != nil {
-		return err
-	}
-
-	err = stmt.Close()
+	_, err = writer.Db.Exec(writer.Db.AppendStatement, event.SourceID.String(), event.Created, event.EventType, event.Version, payloadText)
 	if err != nil {
 		return err
 	}
