@@ -19,10 +19,10 @@ type Db struct {
 	AppendStatement string
 }
 
-// Prepare prepare sql statement for execution
-func (db *Db) Prepare(query string) (stmt *sql.Stmt, err error) {
-	stmt, err = db.innerDb.Prepare(query)
-	return
+// Exec executes sql statement
+func (db *Db) Exec(query string, args ...interface{}) (*sql.Result, error) {
+	result, err := db.innerDb.Exec(query, args...)
+	return &result, err
 }
 
 // Close close db
