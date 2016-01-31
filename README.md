@@ -194,5 +194,3 @@ The example below uses MS SQL Server and JSON serialization.
 
      	fmt.Printf("Finished in %s. %s per event", timePassed, timeDurationPerEvent)
      }
-
-For a full guide visit https://github.com/mantzas/golinear
