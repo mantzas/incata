@@ -32,6 +32,14 @@ func (serializer TestSerializer) Serialize(value interface{}) (ret string, err e
 	return
 }
 
+func TestNewAppenderWithoutSetup(t *testing.T) {
+
+	_, err := NewAppender()
+	if err == nil {
+		t.Fatal(err.Error())
+	}
+}
+
 func TestAppender(t *testing.T) {
 
 	event := model.NewEvent(uuid.NewV4(), getTestData(), "TEST", 1)
@@ -57,13 +65,16 @@ func TestAppender(t *testing.T) {
 	for _, c := range cases {
 
 		wr := writer.NewMemoryWriter()
-		appender := NewAppender(wr)
+		SetupAppender(wr)
+		ar, err := NewAppender()
+		if err != nil {
+			t.Fatal(err.Error())
+		}
 
-		err := appender.Append(*event)
+		err = ar.Append(*event)
 
 		if err != nil && err.Error() != c.expectedErr.Error() {
 
-			t.Fatalf("Append error occured %s", err)
 		} else {
 
 			if len(wr.Data) != 1 {
@@ -77,7 +88,9 @@ func BenchmarkAppender(b *testing.B) {
 
 	wr := writer.NewMemoryWriter()
 
-	appender := NewAppender(wr)
+	SetupAppender(wr)
+
+	appender, _ := NewAppender()
 
 	event := model.NewEvent(uuid.NewV4(), getTestData(), "TEST", 1)
 

@@ -15,10 +15,7 @@ type SQLWriter struct {
 // NewSQLWriter creates a new sql writer
 func NewSQLWriter(db *relational.Db, ser serializer.Serializer) *SQLWriter {
 
-	return &SQLWriter{
-		Db:         db,
-		Serializer: ser,
-	}
+	return &SQLWriter{Db: db, Serializer: ser}
 }
 
 // Write writes a value to db table

@@ -1,6 +1,8 @@
 package golinear
 
 import (
+	"errors"
+
 	"github.com/mantzas/golinear/model"
 	"github.com/mantzas/golinear/writer"
 )
@@ -15,11 +17,20 @@ type EventAppender struct {
 	Writer writer.Writer
 }
 
+var wr writer.Writer
+
+// SetupAppender setting up the appender
+func SetupAppender(writer writer.Writer) {
+	wr = writer
+}
+
 // NewAppender Creates a new event appender
-func NewAppender(writer writer.Writer) *EventAppender {
-	return &EventAppender{
-		Writer: writer,
+func NewAppender() (*EventAppender, error) {
+
+	if wr == nil {
+		return nil, errors.New("Writer is not setup!")
 	}
+	return &EventAppender{Writer: wr}, nil
 }
 
 // Append Append the payload to the storage
