@@ -8,7 +8,7 @@ The same goes for the writer which needs to implement the Writer interface.
 
 Currently we support two relational DB's, MS Sql Server and Postgresql.
 
-The stored Event has the follwoing structure:
+The stored Event has the following structure:
 
  type Event struct {
     Id        int64
@@ -30,7 +30,7 @@ In order to use the appender we have to do the following once on application sta
     sr := serializer.NewJSONSerializer()
 
 2. We create the DB table to hold the events. For MS Sql Server we should have the following statement.
-Payload is set to NVARCHAR(MAX) since we are serializing using th JSON format.
+Payload is set to NVARCHAR(MAX) since we are serializing using the JSON format.
 
   CREATE TABLE Event (
    Id BIGINT IDENTITY
