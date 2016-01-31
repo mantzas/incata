@@ -1,12 +1,14 @@
 package model
 
 import (
-	"github.com/twinj/uuid"
 	"time"
+
+	"github.com/twinj/uuid"
 )
 
 // Event this is the main event that will get written
 type Event struct {
+	Id        int64
 	SourceID  uuid.UUID
 	Created   time.Time
 	Payload   interface{}
