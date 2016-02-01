@@ -1,7 +1,7 @@
-# golinear ![alt text](https://travis-ci.org/mantzas/golinear.svg?branch=master "Build Status")&nbsp;[![alt text](https://godoc.org/github.com/mantzas/golinear?status.png)](https://godoc.org/github.com/mantzas/golinear)&nbsp;[![Report card](http://goreportcard.com/badge/mantzas/golinear)](http://goreportcard.com/report/mantzas/golinear)
+# incata ![alt text](https://travis-ci.org/mantzas/incata.svg?branch=master "Build Status")&nbsp;[![alt text](https://godoc.org/github.com/mantzas/incata?status.png)](https://godoc.org/github.com/mantzas/incata)&nbsp;[![Report card](http://goreportcard.com/badge/mantzas/incata)](http://goreportcard.com/report/mantzas/incata)
 Event Sourcing Data Access Library
 
-Package golinear is a source eventing data access library.
+Package incata is a source eventing data access library.
 Details about event sourcing can be read on Martin Fowlers site(http://martinfowler.com/eaaDev/EventSourcing.html).
 
 We have to provide two components in order to setup a appender, the serializer and the writer.
@@ -66,7 +66,7 @@ Payload is set to NVARCHAR(MAX) since we are serializing using the JSON format.
 
 5. We set up the appender.
 
-        golinear.SetupAppender(wr)
+        incata.SetupAppender(wr)
 
 
 That's it. Every time we need to append a event to the store we (Usage):
@@ -77,7 +77,7 @@ That's it. Every time we need to append a event to the store we (Usage):
 
   2. Get a new appender and append the event
 
-          ar, err := golinear.NewAppender()
+          ar, err := incata.NewAppender()
           if err != nil {
             return
           }
@@ -126,11 +126,11 @@ The example below uses MS SQL Server and JSON serialization.
      	"time"
 
      	_ "github.com/denisenkom/go-mssqldb"
-     	"github.com/mantzas/golinear"
-     	"github.com/mantzas/golinear/model"
-     	"github.com/mantzas/golinear/relational"
-     	"github.com/mantzas/golinear/serializer"
-     	"github.com/mantzas/golinear/writer"
+     	"github.com/mantzas/incata"
+     	"github.com/mantzas/incata/model"
+     	"github.com/mantzas/incata/relational"
+     	"github.com/mantzas/incata/serializer"
+     	"github.com/mantzas/incata/writer"
      	"github.com/twinj/uuid"
      )
 
@@ -164,7 +164,7 @@ The example below uses MS SQL Server and JSON serialization.
 
      	wr := writer.NewSQLWriter(db, sr)
 
-     	golinear.SetupAppender(wr)
+     	incata.SetupAppender(wr)
 
      	sourceID := uuid.NewV4()
 
@@ -178,7 +178,7 @@ The example below uses MS SQL Server and JSON serialization.
      		go func(index int) {
      			defer wg.Done()
      			event := model.NewEvent(sourceID, Payload{Description: string(index)}, "TestEvent", 1)
-     			ar, err := golinear.NewAppender()
+     			ar, err := incata.NewAppender()
      			if err != nil {
      				return
      			}

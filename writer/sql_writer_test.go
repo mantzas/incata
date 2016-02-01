@@ -7,9 +7,9 @@ import (
 
 	_ "github.com/denisenkom/go-mssqldb"
 	_ "github.com/lib/pq"
-	"github.com/mantzas/golinear/model"
-	"github.com/mantzas/golinear/relational"
-	"github.com/mantzas/golinear/serializer"
+	"github.com/mantzas/incata/model"
+	"github.com/mantzas/incata/relational"
+	"github.com/mantzas/incata/serializer"
 	"github.com/twinj/uuid"
 )
 

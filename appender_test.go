@@ -1,13 +1,13 @@
-package golinear
+package incata
 
 import (
 	"errors"
 	"testing"
 	"time"
 
-	"github.com/mantzas/golinear/model"
-	"github.com/mantzas/golinear/serializer"
-	"github.com/mantzas/golinear/writer"
+	"github.com/mantzas/incata/model"
+	"github.com/mantzas/incata/serializer"
+	"github.com/mantzas/incata/writer"
 	"github.com/twinj/uuid"
 )
 

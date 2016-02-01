@@ -1,4 +1,4 @@
-package: github.com/mantzas/golinear
+package: github.com/mantzas/incata
 import:
 - package: github.com/twinj/uuid
 - package: github.com/mantzas/adaptlog

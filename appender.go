@@ -1,10 +1,10 @@
-package golinear
+package incata
 
 import (
 	"errors"
 
-	"github.com/mantzas/golinear/model"
-	"github.com/mantzas/golinear/writer"
+	"github.com/mantzas/incata/model"
+	"github.com/mantzas/incata/writer"
 )
 
 // Appender interface

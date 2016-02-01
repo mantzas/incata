@@ -1,7 +1,7 @@
 package writer
 
 import (
-	"github.com/mantzas/golinear/model"
+	"github.com/mantzas/incata/model"
 	"github.com/twinj/uuid"
 	"reflect"
 	"testing"
