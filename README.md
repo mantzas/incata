@@ -1,4 +1,4 @@
-# golinear ![alt text](https://travis-ci.org/mantzas/golinear.svg?branch=master "Build Status")
+# golinear ![alt text](https://travis-ci.org/mantzas/golinear.svg?branch=master "Build Status")&nbsp;[![alt text](https://godoc.org/github.com/mantzas/golinear?status.png)](https://godoc.org/github.com/mantzas/golinear)
 Event Sourcing Data Access Library
 
 
