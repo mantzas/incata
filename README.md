@@ -1,6 +1,5 @@
-# golinear ![alt text](https://travis-ci.org/mantzas/golinear.svg?branch=master "Build Status")&nbsp;[![alt text](https://godoc.org/github.com/mantzas/golinear?status.png)](https://godoc.org/github.com/mantzas/golinear)
+# golinear ![alt text](https://travis-ci.org/mantzas/golinear.svg?branch=master "Build Status")&nbsp;[![alt text](https://godoc.org/github.com/mantzas/golinear?status.png)](https://godoc.org/github.com/mantzas/golinear)&nbsp;[![Report card](http://goreportcard.com/badge/mantzas/golinear)](http://goreportcard.com/report/mantzas/golinear)
 Event Sourcing Data Access Library
-
 
 Package golinear is a source eventing data access library.
 Details about event sourcing can be read on Martin Fowlers site(http://martinfowler.com/eaaDev/EventSourcing.html).
