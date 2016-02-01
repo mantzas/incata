@@ -1,5 +1,5 @@
 /*
-Package incata is a source eventing data access library.
+Package incata is a source eventing data access library. The name combines incremental (inc) and data (ata).
 Details about event sourcing can be read on Martin Fowlers site(http://martinfowler.com/eaaDev/EventSourcing.html).
 
 We have to provide two components in order to setup a appender, the serializer and the writer.
