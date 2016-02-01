@@ -45,11 +45,10 @@ Payload is set to NVARCHAR(MAX) since we are serializing using the JSON format.
         ,CONSTRAINT PK_Event PRIMARY KEY CLUSTERED (Id)
        ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
        GO
-
-       CREATE INDEX IX_Event_SourceId
-       ON Linear.dbo.Event (SourceId)
-       ON [PRIMARY]
-       GO
+         CREATE INDEX IX_Event_SourceId
+         ON Linear.dbo.Event (SourceId)
+         ON [PRIMARY]
+         GO
 
 3. We create a db object providing the connection string and the insert statement. We have to import the MS SQL server package!
 
