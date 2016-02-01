@@ -53,12 +53,12 @@ Payload is set to NVARCHAR(MAX) since we are serializing using the JSON format.
 
 3. We create a db object providing the connection string and the insert statement. We have to import the MS SQL server package!
 
-       _ "github.com/denisenkom/go-mssqldb"
+         _ "github.com/denisenkom/go-mssqldb"
 
-       conn := fmt.Sprintf("Server=%s;Database=%s;User Id=%s;Password=%s;", *dbServer, *dbName, *dbUser, *dbPassword)
+         conn := fmt.Sprintf("Server=%s;Database=%s;User Id=%s;Password=%s;", *dbServer, *dbName, *dbUser, *dbPassword)
 
-       db, err := relational.NewDb(relational.MsSQL, "mssql", conn,
-       		"INSERT INTO Event (SourceId, Created, EventType, Version, Payload)  VALUES (?, ?, ?, ?, ?)")
+         db, err := relational.NewDb(relational.MsSQL, "mssql", conn,
+         		"INSERT INTO Event (SourceId, Created, EventType, Version, Payload)  VALUES (?, ?, ?, ?, ?)")`
 
 4. We create a writer
 
