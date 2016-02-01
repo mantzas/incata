@@ -36,15 +36,17 @@ In order to use the appender we have to do the following once on application sta
 Payload is set to NVARCHAR(MAX) since we are serializing using the JSON format.
 
         CREATE TABLE Event (
-         Id BIGINT IDENTITY
-        ,SourceId UNIQUEIDENTIFIER NOT NULL
-        ,Created DATETIME2 NOT NULL
-        ,EventType NVARCHAR(250) NOT NULL
-        ,Version INT NOT NULL
-        ,Payload NVARCHAR(MAX) NOT NULL
-        ,CONSTRAINT PK_Event PRIMARY KEY CLUSTERED (Id)
-       ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-       GO
+          Id BIGINT IDENTITY
+          ,SourceId UNIQUEIDENTIFIER NOT NULL
+          ,Created DATETIME2 NOT NULL
+          ,EventType NVARCHAR(250) NOT NULL
+          ,Version INT NOT NULL
+          ,Payload NVARCHAR(MAX) NOT NULL
+          ,CONSTRAINT PK_Event PRIMARY KEY CLUSTERED (Id)
+        ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+         GO
+
          CREATE INDEX IX_Event_SourceId
          ON Linear.dbo.Event (SourceId)
          ON [PRIMARY]
