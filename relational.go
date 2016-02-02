@@ -1,15 +1,20 @@
 package incata
 
-import "database/sql"
-import "errors"
+import (
+	"database/sql"
+	"fmt"
+
+	_ "github.com/denisenkom/go-mssqldb" // MS SQL Server support
+	_ "github.com/lib/pq"                // PostgreSQL support
+)
 
 // DbType defines the type of the db
 type DbType int
 
 // Relational Db Types
 const (
-	MsSQL      DbType = iota // MS SQL Server
-	Postgresql               // Postgresql
+	MSSQL      DbType = iota // MS SQL Server
+	PostgreSQL               // Postgresql
 )
 
 // Db a db struct
@@ -39,33 +44,45 @@ func (db *Db) Close() (err error) {
 }
 
 // NewDb return a new MS SQL Server Db object
-func NewDb(dbType DbType, driverName string, connection string, appendStatement string, selectBySourceIDStatement string) (database *Db, err error) {
+func NewDb(dbType DbType, connection string) (*Db, error) {
 
-	if len(appendStatement) == 0 {
-		err = errors.New("Append statement should have a value!")
-		return
-	}
-
-	if len(selectBySourceIDStatement) == 0 {
-		err = errors.New("Select by source ID statement should have a value!")
-		return
-	}
-
-	db, err := sql.Open(driverName, connection)
+	driver, appendStmt, selectStmt, err := getStatements(dbType)
 	if err != nil {
-		return
+		return nil, err
+	}
+
+	db, err := sql.Open(driver, connection)
+	if err != nil {
+		return nil, err
 	}
 
 	if err = db.Ping(); err != nil {
 		db.Close()
-		return
+		return nil, err
 	}
 
-	database = &Db{
+	database := &Db{
 		innerDb:                   db,
 		DbType:                    dbType,
-		AppendStatement:           appendStatement,
-		SelectBySourceIDStatement: selectBySourceIDStatement,
+		AppendStatement:           appendStmt,
+		SelectBySourceIDStatement: selectStmt,
 	}
-	return
+	return database, nil
+}
+
+func getStatements(dbType DbType) (string, string, string, error) {
+
+	switch dbType {
+
+	case MSSQL:
+		return "mssql", `INSERT INTO Event (SourceId, Created, EventType, Version, Payload)  VALUES (?, ?, ?, ?, ?)`,
+			`SELECT Id ,SourceId ,Created ,EventType ,Version ,Payload FROM Event e WHERE SourceId = ?`, nil
+
+	case PostgreSQL:
+		return "postgres", `INSERT INTO linearevents ("SourceId", "Created", "EventType", "Version", "Payload") VALUES ($1, $2, $3, $4, $5)`,
+			`SELECT "Id", "SourceId", "Created", "EventType", "Version", "Payload" FROM linearevents WHERE "SourceId" = $1`, nil
+
+	default:
+		return "", "", "", fmt.Errorf("DB type %d is not supported", dbType)
+	}
 }
