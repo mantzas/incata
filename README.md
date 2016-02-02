@@ -1,4 +1,6 @@
-# incata ![alt text](https://travis-ci.org/mantzas/incata.svg?branch=master "Build Status")&nbsp;[![alt text](https://godoc.org/github.com/mantzas/incata?status.png)](https://godoc.org/github.com/mantzas/incata)&nbsp;[![Report card](http://goreportcard.com/badge/mantzas/incata)](http://goreportcard.com/report/mantzas/incata)
+# incata [![alt text](https://godoc.org/github.com/mantzas/incata?status.png)](https://godoc.org/github.com/mantzas/incata)&nbsp;[![build status](https://img.shields.io/travis/mantzas/incata.svg)](http://travis-ci.org/mantzas/incata)&nbsp;[![code coverage](https://img.shields.io/coveralls/mantzas/incata.svg)](https://coveralls.io/r/mantzas/incata)&nbsp;[![Report card](http://goreportcard.com/badge/mantzas/incata)](http://goreportcard.com/report/mantzas/incata)&nbsp;[![issues](https://img.shields.io/github/issues/mantzas/incata.svg)](https://github.com/mantzas/incata/issues)
+
+
 Event Sourcing Data Access Library
 
 Package incata is a source eventing data access library. The name combines incremental (inc) and data (ata).
