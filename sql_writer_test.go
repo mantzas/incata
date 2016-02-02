@@ -52,14 +52,15 @@ func runDatabaseBenchmark(b *testing.B, db *Db) {
 func getSQLServerDb() (db *Db, err error) {
 
 	db, err = NewDb(MsSQL, "mssql", "Server=xxx;Database=sss;User Id=xx;Password=xxx;",
-		"INSERT INTO Event (SourceId, Created, EventType, Version, Payload)  VALUES (?, ?, ?, ?, ?)", "SELECT 1")
+		`INSERT INTO Event (SourceId, Created, EventType, Version, Payload)  VALUES (?, ?, ?, ?, ?)`,
+		`SELECT Id ,SourceId ,Created ,EventType ,Version ,Payload FROM Event e WHERE SourceId = ?`)
 	return
 }
 
 func getPostgresqlDb() (db *Db, err error) {
 
 	db, err = NewDb(Postgresql, "postgres", "postgres://postgres:xxx@xxx/linear",
-		`INSERT INTO linearevents ("SourceId", "Created", "EventType", "Version", "Payload") VALUES ($1, $2, $3, $4, $5)`, "SELECT 1")
-
+		`INSERT INTO linearevents ("SourceId", "Created", "EventType", "Version", "Payload") VALUES ($1, $2, $3, $4, $5)`,
+		`SELECT "Id", "SourceId", "Created", "EventType", "Version", "Payload" FROM linearevents WHERE "SourceId" = $1`)
 	return
 }
