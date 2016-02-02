@@ -6,7 +6,7 @@ import (
 	"github.com/mantzas/incata/serializer"
 )
 
-// SQLWriter writer for MS SQL Server
+// SQLWriter writer for writing events
 type SQLWriter struct {
 	Db         *relational.Db
 	Serializer serializer.Serializer
@@ -19,14 +19,14 @@ func NewSQLWriter(db *relational.Db, ser serializer.Serializer) *SQLWriter {
 }
 
 // Write writes a value to db table
-func (writer *SQLWriter) Write(event model.Event) error {
+func (w *SQLWriter) Write(event model.Event) error {
 
-	payloadText, err := writer.Serializer.Serialize(event.Payload)
+	payloadText, err := w.Serializer.Serialize(event.Payload)
 	if err != nil {
 		return err
 	}
 
-	_, err = writer.Db.Exec(writer.Db.AppendStatement, event.SourceID.String(), event.Created, event.EventType, event.Version, payloadText)
+	_, err = w.Db.Exec(w.Db.AppendStatement, event.SourceID.String(), event.Created, event.EventType, event.Version, payloadText)
 	if err != nil {
 		return err
 	}

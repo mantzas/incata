@@ -78,14 +78,14 @@ func runDatabaseBenchmark(b *testing.B, db *relational.Db) {
 func getSQLServerDb() (db *relational.Db, err error) {
 
 	db, err = relational.NewDb(relational.MsSQL, "mssql", "Server=xxx;Database=sss;User Id=xx;Password=xxx;",
-		"INSERT INTO Event (SourceId, Created, EventType, Version, Payload)  VALUES (?, ?, ?, ?, ?)")
+		"INSERT INTO Event (SourceId, Created, EventType, Version, Payload)  VALUES (?, ?, ?, ?, ?)", "SELECT 1")
 	return
 }
 
 func getPostgresqlDb() (db *relational.Db, err error) {
 
 	db, err = relational.NewDb(relational.Postgresql, "postgres", "postgres://postgres:xxx@xxx/linear",
-		`INSERT INTO linearevents ("SourceId", "Created", "EventType", "Version", "Payload") VALUES ($1, $2, $3, $4, $5)`)
+		`INSERT INTO linearevents ("SourceId", "Created", "EventType", "Version", "Payload") VALUES ($1, $2, $3, $4, $5)`, "SELECT 1")
 
 	return
 }
