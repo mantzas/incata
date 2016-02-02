@@ -2,5 +2,9 @@ language: go
 go:
   - 1.5.3
   - tip
-script: go test -v ./...
-after_success: coveralls
+before_script:
+    - go get golang.org/x/tools/cmd/cover
+    - go get github.com/mattn/goveralls
+script: go test -v -covermode=count -coverprofile=coverage.out .
+after_success:
+    - $HOME/gopath/bin/goveralls -covermode=count -coverprofile=coverage.out -service=travis-ci
