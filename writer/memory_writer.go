@@ -12,19 +12,19 @@ type MemoryWriter struct {
 }
 
 // NewMemoryWriter creates a new memory writer
-func NewMemoryWriter() *MemoryWriter {
+func NewMemoryWriter(data []model.Event) *MemoryWriter {
 
 	return &MemoryWriter{
-		Data: make([]model.Event, 0),
+		Data: data,
 	}
 }
 
 // Write writes a value to a string slice
-func (writer *MemoryWriter) Write(event model.Event) (err error) {
+func (w *MemoryWriter) Write(event model.Event) (err error) {
 
-	writer.mx.Lock()
-	defer writer.mx.Unlock()
-	writer.Data = append(writer.Data, event)
+	w.mx.Lock()
+	defer w.mx.Unlock()
+	w.Data = append(w.Data, event)
 	err = nil
 	return
 }

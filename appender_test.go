@@ -64,7 +64,8 @@ func TestAppender(t *testing.T) {
 
 	for _, c := range cases {
 
-		wr := writer.NewMemoryWriter()
+		var data = make([]model.Event, 0)
+		wr := writer.NewMemoryWriter(data)
 		SetupAppender(wr)
 		ar, err := NewAppender()
 		if err != nil {
@@ -86,7 +87,8 @@ func TestAppender(t *testing.T) {
 
 func BenchmarkAppender(b *testing.B) {
 
-	wr := writer.NewMemoryWriter()
+	var data = make([]model.Event, 0)
+	wr := writer.NewMemoryWriter(data)
 
 	SetupAppender(wr)
 

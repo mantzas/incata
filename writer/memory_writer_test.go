@@ -15,7 +15,9 @@ func TestItemsAdded(t *testing.T) {
 	expectedItems = append(expectedItems, *item1)
 	expectedItems = append(expectedItems, *item2)
 
-	writer := NewMemoryWriter()
+	var data = make([]model.Event, 0)
+
+	writer := NewMemoryWriter(data)
 	writer.Write(*item1)
 	writer.Write(*item2)
 
@@ -27,7 +29,9 @@ func TestItemsAdded(t *testing.T) {
 func TestItemsEmpty(t *testing.T) {
 	var expectedItems = make([]string, 0)
 
-	writer := NewMemoryWriter()
+	var data = make([]model.Event, 0)
+
+	writer := NewMemoryWriter(data)
 
 	if len(expectedItems) != len(writer.Data) {
 		t.Fatalf("Expected %s, got %s", expectedItems, writer.Data)
