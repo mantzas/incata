@@ -10,7 +10,7 @@ func BenchmarkAppenderPostgresql(b *testing.B) {
 
 	b.Skipf("Postgresql benchmark!")
 
-	db, err := NewDb(PostgreSQL, "postgres://postgres:xxx@xxx/linear")
+	db, err := NewDb(PostgreSQL, "postgres://user:pwd@server/linear?sslmode=disable")
 
 	if err != nil {
 		b.Fatalf("Fatal error %s", err.Error())
