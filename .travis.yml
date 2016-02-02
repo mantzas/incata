@@ -3,5 +3,4 @@ go:
   - 1.5.3
   - tip
 script: go test -v ./...
-after_success:
-  - coveralls
+after_success: coveralls
