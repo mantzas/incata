@@ -1,25 +1,19 @@
-package writer
-
-import (
-	"github.com/mantzas/incata/model"
-	"github.com/mantzas/incata/relational"
-	"github.com/mantzas/incata/serializer"
-)
+package incata
 
 // SQLWriter writer for writing events
 type SQLWriter struct {
-	Db         *relational.Db
-	Serializer serializer.Serializer
+	Db         *Db
+	Serializer Serializer
 }
 
 // NewSQLWriter creates a new sql writer
-func NewSQLWriter(db *relational.Db, ser serializer.Serializer) *SQLWriter {
+func NewSQLWriter(db *Db, ser Serializer) *SQLWriter {
 
 	return &SQLWriter{Db: db, Serializer: ser}
 }
 
 // Write writes a value to db table
-func (w *SQLWriter) Write(event model.Event) error {
+func (w *SQLWriter) Write(event Event) error {
 
 	payloadText, err := w.Serializer.Serialize(event.Payload)
 	if err != nil {

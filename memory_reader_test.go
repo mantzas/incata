@@ -1,14 +1,13 @@
-package reader
+package incata
 
 import (
-	"github.com/mantzas/incata/model"
 	"github.com/twinj/uuid"
 	"testing"
 )
 
 func TestReadItems(t *testing.T) {
 
-	var data = make([]model.Event, 0)
+	var data = make([]Event, 0)
 	sourceID := uuid.NewV4()
 	data = append(data, *getEvent(sourceID))
 	data = append(data, *getEvent(uuid.NewV4()))
@@ -32,9 +31,9 @@ func TestReadItems(t *testing.T) {
 	}
 }
 
-func getEvent(sourceID uuid.UUID) *model.Event {
+func getEvent(sourceID uuid.UUID) *Event {
 
-	var event = new(model.Event)
+	var event = new(Event)
 
 	event.SourceID = sourceID
 

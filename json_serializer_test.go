@@ -1,21 +1,13 @@
-package serializer
+package incata
 
 import (
 	"testing"
 	"time"
 )
 
-type TestData struct {
-	Version   int       `json:"version"`
-	Name      string    `json:"name"`
-	Balance   float32   `json:"balance"`
-	BirthDate time.Time `json:"birth_date"`
-	Error     error     `json:"error"`
-}
-
 func TestJSONSerializer(t *testing.T) {
 
-	expectedString := "{\"version\":1,\"name\":\"Joe\",\"balance\":12.99,\"birth_date\":\"2015-12-13T23:59:59+02:00\",\"error\":null}"
+	expectedString := `{"version":1,"name":"Joe","balance":12.99,"birth_date":"2015-12-13T23:59:59+02:00"}`
 
 	location, err := time.LoadLocation("Europe/Athens")
 

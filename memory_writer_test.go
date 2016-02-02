@@ -1,7 +1,6 @@
-package writer
+package incata
 
 import (
-	"github.com/mantzas/incata/model"
 	"github.com/twinj/uuid"
 	"reflect"
 	"testing"
@@ -9,13 +8,13 @@ import (
 
 func TestItemsAdded(t *testing.T) {
 
-	item1 := model.NewEvent(uuid.NewV4(), "Test 1", "TEST", 1)
-	item2 := model.NewEvent(uuid.NewV4(), "Test 2", "TEST", 1)
-	expectedItems := []model.Event{}
+	item1 := NewEvent(uuid.NewV4(), "Test 1", "TEST", 1)
+	item2 := NewEvent(uuid.NewV4(), "Test 2", "TEST", 1)
+	expectedItems := []Event{}
 	expectedItems = append(expectedItems, *item1)
 	expectedItems = append(expectedItems, *item2)
 
-	var data = make([]model.Event, 0)
+	var data = make([]Event, 0)
 
 	writer := NewMemoryWriter(data)
 	writer.Write(*item1)
@@ -29,7 +28,7 @@ func TestItemsAdded(t *testing.T) {
 func TestItemsEmpty(t *testing.T) {
 	var expectedItems = make([]string, 0)
 
-	var data = make([]model.Event, 0)
+	var data = make([]Event, 0)
 
 	writer := NewMemoryWriter(data)
 

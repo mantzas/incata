@@ -1,4 +1,4 @@
-package model
+package incata
 
 import (
 	"github.com/twinj/uuid"

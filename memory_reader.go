@@ -1,17 +1,16 @@
-package reader
+package incata
 
 import (
-	"github.com/mantzas/incata/model"
 	"github.com/twinj/uuid"
 )
 
 // MemoryReader for memory reading
 type MemoryReader struct {
-	Data []model.Event
+	Data []Event
 }
 
 // NewMemoryReader creates a new memory reader
-func NewMemoryReader(data []model.Event) *MemoryReader {
+func NewMemoryReader(data []Event) *MemoryReader {
 
 	return &MemoryReader{
 		Data: data,
@@ -19,9 +18,9 @@ func NewMemoryReader(data []model.Event) *MemoryReader {
 }
 
 // Write writes a value to a string slice
-func (r *MemoryReader) Read(sourceID uuid.UUID) ([]model.Event, error) {
+func (r *MemoryReader) Read(sourceID uuid.UUID) ([]Event, error) {
 
-	var events = make([]model.Event, 0)
+	var events = make([]Event, 0)
 
 	for _, event := range r.Data {
 

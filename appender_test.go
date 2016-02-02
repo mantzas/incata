@@ -5,9 +5,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mantzas/incata/model"
-	"github.com/mantzas/incata/serializer"
-	"github.com/mantzas/incata/writer"
 	"github.com/twinj/uuid"
 )
 
@@ -42,10 +39,10 @@ func TestNewAppenderWithoutSetup(t *testing.T) {
 
 func TestAppender(t *testing.T) {
 
-	event := model.NewEvent(uuid.NewV4(), getTestData(), "TEST", 1)
+	event := NewEvent(uuid.NewV4(), getTestData(), "TEST", 1)
 
 	cases := []struct {
-		ser         serializer.Serializer
+		ser         Serializer
 		expectedErr error
 	}{
 		{
@@ -64,8 +61,8 @@ func TestAppender(t *testing.T) {
 
 	for _, c := range cases {
 
-		var data = make([]model.Event, 0)
-		wr := writer.NewMemoryWriter(data)
+		var data = make([]Event, 0)
+		wr := NewMemoryWriter(data)
 		SetupAppender(wr)
 		ar, err := NewAppender()
 		if err != nil {
@@ -87,14 +84,14 @@ func TestAppender(t *testing.T) {
 
 func BenchmarkAppender(b *testing.B) {
 
-	var data = make([]model.Event, 0)
-	wr := writer.NewMemoryWriter(data)
+	var data = make([]Event, 0)
+	wr := NewMemoryWriter(data)
 
 	SetupAppender(wr)
 
 	appender, _ := NewAppender()
 
-	event := model.NewEvent(uuid.NewV4(), getTestData(), "TEST", 1)
+	event := NewEvent(uuid.NewV4(), getTestData(), "TEST", 1)
 
 	for n := 0; n < b.N; n++ {
 		appender.Append(*event)

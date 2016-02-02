@@ -1,4 +1,4 @@
-package serializer
+package incata
 
 import (
 	"encoding/json"

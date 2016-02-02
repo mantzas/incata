@@ -2,9 +2,6 @@ package incata
 
 import (
 	"errors"
-
-	"github.com/mantzas/incata/model"
-	"github.com/mantzas/incata/writer"
 )
 
 // Appender interface
@@ -14,13 +11,13 @@ type Appender interface {
 
 // EventAppender Append events to storage
 type EventAppender struct {
-	Writer writer.Writer
+	Writer Writer
 }
 
-var wr writer.Writer
+var wr Writer
 
 // SetupAppender setting up the appender
-func SetupAppender(writer writer.Writer) {
+func SetupAppender(writer Writer) {
 	wr = writer
 }
 
@@ -34,7 +31,7 @@ func NewAppender() (*EventAppender, error) {
 }
 
 // Append Append the payload to the storage
-func (appender *EventAppender) Append(event model.Event) error {
+func (appender *EventAppender) Append(event Event) error {
 
 	return appender.Writer.Write(event)
 }

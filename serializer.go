@@ -1,4 +1,4 @@
-package serializer
+package incata
 
 // Serializer interface
 type Serializer interface {

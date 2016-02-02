@@ -1,4 +1,4 @@
-package relational
+package incata
 
 import "database/sql"
 import "errors"
