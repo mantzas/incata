@@ -19,7 +19,7 @@ type TestSerializer struct {
 	Failure bool
 }
 
-func (serializer TestSerializer) Serialize(value interface{}) (ret string, err error) {
+func (serializer TestSerializer) Serialize(value interface{}) (ret interface{}, err error) {
 
 	if serializer.Failure {
 		err = errors.New("serialization error")

@@ -2,5 +2,5 @@ package incata
 
 // Serializer interface
 type Serializer interface {
-	Serialize(interface{}) (string, error)
+	Serialize(interface{}) (interface{}, error)
 }

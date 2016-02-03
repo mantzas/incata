@@ -11,18 +11,17 @@ type JSONSerializer struct {
 // NewJSONSerializer creates a new JSON serializer
 func NewJSONSerializer() *JSONSerializer {
 
-	return &JSONSerializer{}
+	return new(JSONSerializer)
 }
 
 // Serialize JSON Implementation of serialization
-func (serializer *JSONSerializer) Serialize(value interface{}) (ret string, err error) {
+func (serializer *JSONSerializer) Serialize(value interface{}) (interface{}, error) {
 
 	jsonArray, err := json.Marshal(value)
 
 	if err != nil {
-		return
+		return nil, err
 	}
-
-	ret = string(jsonArray)
-	return
+	
+	return string(jsonArray), nil
 }
