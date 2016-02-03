@@ -72,13 +72,13 @@ func NewDb(dbType DbType, connection string) (*Db, error) {
 
 // NewDbFinalized creates a new Db object with setup db argument
 func NewDbFinalized(db *sql.DB, dbType DbType) (*Db, error) {
-    
-    _ , appendStmt, selectStmt, err := getStatements(dbType)
+
+	_, appendStmt, selectStmt, err := getStatements(dbType)
 	if err != nil {
 		return nil, err
 	}
-    
-    database := &Db{
+
+	database := &Db{
 		innerDb:                   db,
 		DbType:                    dbType,
 		AppendStatement:           appendStmt,
@@ -91,7 +91,7 @@ func getStatements(dbType DbType) (string, string, string, error) {
 
 	switch dbType {
 
-	case MSSQL:          
+	case MSSQL:
 		return "mssql", `INSERT INTO Event (SourceId, Created, EventType, Version, Payload) VALUES (?, ?, ?, ?, ?)`,
 			`SELECT Id ,SourceId ,Created ,EventType ,Version ,Payload FROM Event e WHERE SourceId = ?`, nil
 
