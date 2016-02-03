@@ -1,6 +1,10 @@
-hash: eec667fc8b1e8a2fb6cca2e4cb16693489070cdabe2f72302e68d791645dd87b
-updated: 2016-02-02T00:48:09.0718502+02:00
+hash: 6cb55d97e17f5e0183e2261c4964258f382ca0dab8e141afed7585dc49994645
+updated: 2016-02-03T23:11:41.3036534+02:00
 imports:
+- name: github.com/DATA-DOG/go-sqlmock
+  version: f49a90b6f7f3763b76ca1618f1bbd6189239be7a
+- name: github.com/kisielk/sqlstruct
+  version: 648daed35d49dac24a4bff253b190a80da3ab6a5
 - name: github.com/mantzas/adaptlog
   version: ad3caae9692d52f219754d371720ee3ccc41f5ee
   vcs: git
