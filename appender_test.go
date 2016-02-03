@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/twinj/uuid"
+	"sync"
 )
 
 type TestData struct {
@@ -108,4 +109,28 @@ func getTestData() *TestData {
 		Balance:   12.99,
 		BirthDate: time.Date(2015, 12, 13, 23, 59, 59, 0, location),
 	}
+}
+
+// MemoryWriter Writer for memory
+type MemoryWriter struct {
+	Data []Event
+	mx   sync.Mutex
+}
+
+// NewMemoryWriter creates a new memory writer
+func NewMemoryWriter(data []Event) *MemoryWriter {
+
+	return &MemoryWriter{
+		Data: data,
+	}
+}
+
+// Write writes a value to a string slice
+func (w *MemoryWriter) Write(event Event) (err error) {
+
+	w.mx.Lock()
+	defer w.mx.Unlock()
+	w.Data = append(w.Data, event)
+	err = nil
+	return
 }

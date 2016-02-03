@@ -33,14 +33,14 @@ func TestJSONSerializer(t *testing.T) {
 	}
 }
 
-func TestSerializerWithNull(t *testing.T)  {
-    
-    var m = make(map[int]int, 0)
-    payload, err := NewJSONSerializer().Serialize(m)
-    
-    if err == nil {
-        t.Fatalf("Should have failed! %s", payload)
-    }
+func TestJSONSerializerWithNull(t *testing.T) {
+
+	var m = make(map[int]int, 0)
+	payload, err := NewJSONSerializer().Serialize(m)
+
+	if err == nil {
+		t.Fatalf("Should have failed! %s", payload)
+	}
 }
 
 func BenchmarkJSONSerializer(b *testing.B) {

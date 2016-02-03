@@ -22,6 +22,6 @@ func (serializer *JSONSerializer) Serialize(value interface{}) (interface{}, err
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return string(jsonArray), nil
 }

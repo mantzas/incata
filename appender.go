@@ -25,7 +25,7 @@ func SetupAppender(writer Writer) {
 func NewAppender() (*EventAppender, error) {
 
 	if wr == nil {
-		return nil, errors.New("Writer is not setup!")
+		return nil, errors.New("Writer is not set up!")
 	}
 	return &EventAppender{Writer: wr}, nil
 }
