@@ -2,6 +2,7 @@ package incata
 
 import (
 	"encoding/json"
+	"errors"
 )
 
 // JSONMarshaller JSON Serializer
@@ -29,7 +30,13 @@ func (s *JSONMarshaller) Serialize(value interface{}) (interface{}, error) {
 // Deserialize JSON implementation of deserialization
 func (s *JSONMarshaller) Deserialize(value interface{}, result interface{}) error {
 
-	if err := json.Unmarshal([]byte(value.(string)), result); err != nil {
+	data, found := value.(string)
+
+	if !found {
+		return errors.New("value is not a string")
+	}
+
+	if err := json.Unmarshal([]byte(data), result); err != nil {
 		return err
 	}
 

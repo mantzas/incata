@@ -93,6 +93,17 @@ func TestJsonDeserializerError(t *testing.T) {
 	}
 }
 
+func TestJsonDeserializerWrongTypeError(t *testing.T) {
+
+	var actual TestData
+
+	err := NewJSONMarshaller().Deserialize(123, &actual)
+
+	if err == nil {
+		t.Fatal("Should have raised a error")
+	}
+}
+
 func BenchmarkJSONSerializer(b *testing.B) {
 
 	var sert = NewJSONMarshaller()
