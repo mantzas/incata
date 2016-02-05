@@ -17,8 +17,8 @@ const (
 	PostgreSQL               // Postgresql
 )
 
-// Db a db struct
-type Db struct {
+// Storage a db abstraction
+type Storage struct {
 	innerDb                   *sql.DB
 	DbType                    DbType
 	AppendStatement           string
@@ -26,25 +26,25 @@ type Db struct {
 }
 
 // Exec executes sql statement
-func (db *Db) Exec(query string, args ...interface{}) (*sql.Result, error) {
+func (db *Storage) Exec(query string, args ...interface{}) (*sql.Result, error) {
 	result, err := db.innerDb.Exec(query, args...)
 	return &result, err
 }
 
 // Query executes a query statment
-func (db *Db) Query(query string, args ...interface{}) (*sql.Rows, error) {
+func (db *Storage) Query(query string, args ...interface{}) (*sql.Rows, error) {
 	rows, err := db.innerDb.Query(query, args...)
 	return rows, err
 }
 
 // Close close db
-func (db *Db) Close() (err error) {
+func (db *Storage) Close() (err error) {
 	err = db.innerDb.Close()
 	return
 }
 
 // NewDb return a new MS SQL Server Db object
-func NewDb(dbType DbType, connection string) (*Db, error) {
+func NewDb(dbType DbType, connection string) (*Storage, error) {
 
 	driver, appendStmt, selectStmt, err := getStatements(dbType)
 	if err != nil {
@@ -61,30 +61,30 @@ func NewDb(dbType DbType, connection string) (*Db, error) {
 		return nil, err
 	}
 
-	database := &Db{
+	storage := &Storage{
 		innerDb:                   db,
 		DbType:                    dbType,
 		AppendStatement:           appendStmt,
 		SelectBySourceIDStatement: selectStmt,
 	}
-	return database, nil
+	return storage, nil
 }
 
 // NewDbFinalized creates a new Db object with setup db argument
-func NewDbFinalized(db *sql.DB, dbType DbType) (*Db, error) {
+func NewDbFinalized(db *sql.DB, dbType DbType) (*Storage, error) {
 
 	_, appendStmt, selectStmt, err := getStatements(dbType)
 	if err != nil {
 		return nil, err
 	}
 
-	database := &Db{
+	storage := &Storage{
 		innerDb:                   db,
 		DbType:                    dbType,
 		AppendStatement:           appendStmt,
 		SelectBySourceIDStatement: selectStmt,
 	}
-	return database, nil
+	return storage, nil
 }
 
 func getStatements(dbType DbType) (string, string, string, error) {

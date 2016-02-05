@@ -6,20 +6,20 @@ import (
 
 // SQLReader for reading events
 type SQLReader struct {
-	Db         *Db
+	Storage    *Storage
 	Serializer Serializer
 }
 
 // NewSQLReader creates a new sql reader
-func NewSQLReader(db *Db, ser Serializer) *SQLReader {
+func NewSQLReader(storage *Storage, ser Serializer) *SQLReader {
 
-	return &SQLReader{Db: db, Serializer: ser}
+	return &SQLReader{Storage: storage, Serializer: ser}
 }
 
 // Read from db with source id
 func (r *SQLReader) Read(sourceID uuid.UUID) ([]Event, error) {
 
-	rows, err := r.Db.Query(r.Db.SelectBySourceIDStatement, sourceID)
+	rows, err := r.Storage.Query(r.Storage.SelectBySourceIDStatement, sourceID)
 	if err != nil {
 		return nil, err
 	}

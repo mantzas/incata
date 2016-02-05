@@ -124,10 +124,10 @@ func BenchmarkAppenderMsSql(b *testing.B) {
 	runDatabaseBenchmark(b, db)
 }
 
-func runDatabaseBenchmark(b *testing.B, db *Db) {
+func runDatabaseBenchmark(b *testing.B, storage *Storage) {
 
 	ser := NewJSONMarshaller()
-	wr := NewSQLWriter(db, ser)
+	wr := NewSQLWriter(storage, ser)
 
 	event := NewEvent(uuid.NewV4(), getTestData(), "TEST", 1)
 
