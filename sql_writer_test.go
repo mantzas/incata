@@ -1,12 +1,12 @@
 package incata
 
 import (
+	"errors"
 	"testing"
-    "errors"
 
+	"database/sql/driver"
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/twinj/uuid"
-	"database/sql/driver"
 	"time"
 )
 
@@ -14,8 +14,8 @@ type AnyTime struct{}
 
 // Match satisfies sqlmock.Argument interface
 func (a AnyTime) Match(v driver.Value) bool {
-    _, ok := v.(time.Time)
-    return ok
+	_, ok := v.(time.Time)
+	return ok
 }
 
 func TestSqlWriterWrite(t *testing.T) {
@@ -26,7 +26,7 @@ func TestSqlWriterWrite(t *testing.T) {
 	}
 	defer db.Close()
 
-	ser := NewJSONSerializer()
+	ser := NewJSONMarshaller()
 	database, _ := NewDbFinalized(db, MSSQL)
 	wr := NewSQLWriter(database, ser)
 
@@ -53,24 +53,24 @@ func TestSqlWriterWriteDbError(t *testing.T) {
 	}
 	defer db.Close()
 
-	ser := NewJSONSerializer()
+	ser := NewJSONMarshaller()
 	database, _ := NewDbFinalized(db, MSSQL)
 	wr := NewSQLWriter(database, ser)
 
 	event := NewEvent(uuid.NewV4(), 1, "TEST", 1)
 	payload, _ := ser.Serialize(event.Payload)
-    
-    mock.ExpectExec("INSERT INTO Event").WithArgs(event.SourceID.String(), AnyTime{}, "TEST", event.Version, payload).WillReturnError(errors.New("TEST"))
 
-    err = wr.Write(*event)
+	mock.ExpectExec("INSERT INTO Event").WithArgs(event.SourceID.String(), AnyTime{}, "TEST", event.Version, payload).WillReturnError(errors.New("TEST"))
+
+	err = wr.Write(*event)
 
 	if err == nil {
 		t.Fatal("Error was expected!")
 	}
 
-    if err.Error() != "TEST" {
-        t.Fatalf("Error should have been TEST but was %s", err.Error())
-    }
+	if err.Error() != "TEST" {
+		t.Fatalf("Error should have been TEST but was %s", err.Error())
+	}
 }
 
 func TestSqlWriterWriteSerializationError(t *testing.T) {
@@ -81,21 +81,21 @@ func TestSqlWriterWriteSerializationError(t *testing.T) {
 	}
 	defer db.Close()
 
-	ser := NewJSONSerializer()
+	ser := NewJSONMarshaller()
 	database, _ := NewDbFinalized(db, MSSQL)
 	wr := NewSQLWriter(database, ser)
 
 	event := NewEvent(uuid.NewV4(), make(map[int]int), "TEST", 1)
 
-    err = wr.Write(*event)
+	err = wr.Write(*event)
 
 	if err == nil {
 		t.Fatalf("error was not expected while writing event: %s", err)
 	}
 
-    if err.Error() != "json: unsupported type: map[int]int" {
-        t.Fatalf("error was not expected while writing event: %s", err)
-    }
+	if err.Error() != "json: unsupported type: map[int]int" {
+		t.Fatalf("error was not expected while writing event: %s", err)
+	}
 }
 
 func BenchmarkAppenderPostgresql(b *testing.B) {
@@ -126,7 +126,7 @@ func BenchmarkAppenderMsSql(b *testing.B) {
 
 func runDatabaseBenchmark(b *testing.B, db *Db) {
 
-	ser := NewJSONSerializer()
+	ser := NewJSONMarshaller()
 	wr := NewSQLWriter(db, ser)
 
 	event := NewEvent(uuid.NewV4(), getTestData(), "TEST", 1)
