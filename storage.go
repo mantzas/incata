@@ -93,7 +93,7 @@ func getStatements(dbType DbType) (string, string, string, error) {
 
 	case MSSQL:
 		return "mssql", `INSERT INTO Event (SourceId, Created, EventType, Version, Payload) VALUES (?, ?, ?, ?, ?)`,
-			`SELECT Id ,SourceId ,Created ,EventType ,Version ,Payload FROM Event e WHERE SourceId = ?`, nil
+			`SELECT Id ,SourceId ,Created ,EventType ,Version ,Payload FROM Event WHERE SourceId = ?`, nil
 
 	case PostgreSQL:
 		return "postgres", `INSERT INTO linearevents ("SourceId", "Created", "EventType", "Version", "Payload") VALUES ($1, $2, $3, $4, $5)`,
