@@ -17,6 +17,23 @@ const (
 	PostgreSQL               // Postgresql
 )
 
+var dbTypeMap = map[string]DbType{
+	"MSSQL":      MSSQL,
+	"PostgreSQL": PostgreSQL,
+}
+
+// ConvertToDbType convert's a string to a DbType
+func ConvertToDbType(value string) (DbType, error) {
+
+	dbType, ok := dbTypeMap[value]
+
+	if ok {
+		return dbType, nil
+	}
+
+	return 0, fmt.Errorf("Failed to convert %s to db type", value)
+}
+
 // Storage a db abstraction
 type Storage struct {
 	innerDb                   *sql.DB

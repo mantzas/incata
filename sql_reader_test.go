@@ -29,10 +29,10 @@ func TestSqlReaderRead(t *testing.T) {
 
 	mock.ExpectQuery("SELECT Id ,SourceId ,Created ,EventType ,Version ,Payload FROM Event WHERE SourceId =").WithArgs(AnyTime{})
 
-    marshaller := NewJSONMarshaller()
-    reader := NewSQLReader(storage, marshaller)
-	
-    reader.Read(sourceID)
+	marshaller := NewJSONMarshaller()
+	reader := NewSQLReader(storage, marshaller)
+
+	reader.Read(sourceID)
 
 	if err = mock.ExpectationsWereMet(); err != nil {
 		t.Fatalf("there were unfulfilled expections: %s", err)
