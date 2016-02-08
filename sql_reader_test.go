@@ -1,12 +1,19 @@
 package incata
 
 import (
-	//"database/sql/driver"
+	"database/sql/driver"
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/twinj/uuid"
 )
+
+type AnyType struct{}
+
+// Match satisfies sqlmock.Argument interface
+func (a AnyType) Match(v driver.Value) bool {
+	return true
+}
 
 func TestSqlReaderRead(t *testing.T) {
 
@@ -20,7 +27,7 @@ func TestSqlReaderRead(t *testing.T) {
 
 	var sourceID = uuid.NewV4()
 
-	mock.ExpectQuery("SELECT Id ,SourceId ,Created ,EventType ,Version ,Payload FROM Event WHERE SourceId = (.+)").WithArgs(sourceID.String())
+	mock.ExpectQuery("SELECT Id ,SourceId ,Created ,EventType ,Version ,Payload FROM Event WHERE SourceId =").WithArgs(AnyTime{})
 
     marshaller := NewJSONMarshaller()
     reader := NewSQLReader(storage, marshaller)
