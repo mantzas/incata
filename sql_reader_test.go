@@ -29,7 +29,7 @@ func TestSqlReaderRead(t *testing.T) {
 
 	var sourceID = uuid.NewV4()
 
-	mock.ExpectQuery("SELECT Id ,SourceId ,Created ,EventType ,Version ,Payload FROM Event WHERE SourceId =").WithArgs(AnyTime{})
+	mock.ExpectQuery("^SELECT (.*) FROM Event WHERE SourceId = (.*)$").WithArgs(AnyTime{})
 
 	marshaller := NewJSONMarshaller()
 	reader := NewSQLReader(storage, marshaller)
