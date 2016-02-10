@@ -17,24 +17,26 @@ func (a AnyType) Match(v driver.Value) bool {
 
 func TestSqlReaderRead(t *testing.T) {
 
-    t.Skip("Not working yet!!!")
-
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
 	defer db.Close()
 
-	storage, _ := NewDbFinalized(db, MSSQL)
-
 	var sourceID = uuid.NewV4()
 
-	mock.ExpectQuery("^SELECT (.*) FROM Event WHERE SourceId = (.*)$").WithArgs(AnyTime{})
+	rows := sqlmock.NewRows([]string{"Id", "SourceId", "Created", "EventType", "Version", "Payload"})
+                   
+	mock.ExpectQuery("SELECT").WithArgs(sourceID.String()).WillReturnRows(rows)
 
+	storage, _ := NewDbFinalized(db, MSSQL)
 	marshaller := NewJSONMarshaller()
 	reader := NewSQLReader(storage, marshaller)
 
-	reader.Read(sourceID)
+	_, err = reader.Read(sourceID)
+	if err != nil {
+		t.Fatalf("unexpected err: %s", err)
+	}
 
 	if err = mock.ExpectationsWereMet(); err != nil {
 		t.Fatalf("there were unfulfilled expections: %s", err)

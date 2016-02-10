@@ -19,7 +19,7 @@ func NewSQLReader(storage *Storage, ser Serializer) *SQLReader {
 // Read from db with source id
 func (r *SQLReader) Read(sourceID uuid.UUID) ([]Event, error) {
 
-	rows, err := r.Storage.Query(r.Storage.SelectBySourceIDStatement, sourceID)
+	rows, err := r.Storage.Query(r.Storage.SelectBySourceIDStatement, sourceID.String())
 	if err != nil {
 		return nil, err
 	}
