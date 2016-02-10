@@ -3,9 +3,6 @@ package incata
 import (
 	"database/sql"
 	"fmt"
-
-	_ "github.com/denisenkom/go-mssqldb" // MS SQL Server support
-	_ "github.com/lib/pq"                // PostgreSQL support
 )
 
 // DbType defines the type of the db
