@@ -3,12 +3,12 @@ package incata
 import (
 	"time"
 
-	"github.com/twinj/uuid"
+	"github.com/satori/go.uuid"
 )
 
 // Event this is the main event that will get written
 type Event struct {
-	Id        int64
+	ID        int64
 	SourceID  uuid.UUID
 	Created   time.Time
 	Payload   interface{}

@@ -1,5 +1,5 @@
-hash: 6cb55d97e17f5e0183e2261c4964258f382ca0dab8e141afed7585dc49994645
-updated: 2016-02-03T23:11:41.3036534+02:00
+hash: a8d4404982de17b2b143d2a7d7048a98d8bbd14981097a833bec7868c1f86ec8
+updated: 2016-02-10T22:39:29.0048868+02:00
 imports:
 - name: github.com/DATA-DOG/go-sqlmock
   version: f49a90b6f7f3763b76ca1618f1bbd6189239be7a
@@ -8,6 +8,6 @@ imports:
 - name: github.com/mantzas/adaptlog
   version: ad3caae9692d52f219754d371720ee3ccc41f5ee
   vcs: git
-- name: github.com/twinj/uuid
-  version: 89173bcdda19db0eb88aef1e1cb1cb2505561d31
+- name: github.com/satori/go.uuid
+  version: d41af8bb6a7704f00bc3b7cba9355ae6a5a80048
 devImports: []

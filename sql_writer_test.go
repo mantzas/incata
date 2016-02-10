@@ -6,7 +6,7 @@ import (
 
 	"database/sql/driver"
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/twinj/uuid"
+	"github.com/satori/go.uuid"
 	"time"
 )
 

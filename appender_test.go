@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/twinj/uuid"
+	"github.com/satori/go.uuid"
 	"sync"
 )
 

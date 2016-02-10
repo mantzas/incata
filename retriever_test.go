@@ -1,7 +1,7 @@
 package incata
 
 import (
-	"github.com/twinj/uuid"
+	"github.com/satori/go.uuid"
 	"testing"
 )
 

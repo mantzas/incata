@@ -2,7 +2,7 @@ package incata
 
 import (
 	"errors"
-	"github.com/twinj/uuid"
+	"github.com/satori/go.uuid"
 )
 
 // Retriever interface

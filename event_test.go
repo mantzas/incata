@@ -1,7 +1,8 @@
 package incata
 
 import (
-	"github.com/twinj/uuid"
+	"github.com/satori/go.uuid"
+
 	"testing"
 	"time"
 )
@@ -31,10 +32,5 @@ func TestNewEvent(t *testing.T) {
 	if event.Created.After(utcNow) {
 
 		t.Fatalf("Time is not less or equal! %s", event.Created)
-	}
-
-	if event.SourceID.Version() != int(uuid.RFC4122v4) {
-
-		t.Fatalf("uuid version is not 4! %d", event.SourceID.Version())
 	}
 }

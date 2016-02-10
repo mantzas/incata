@@ -1,7 +1,7 @@
 package incata
 
 import (
-	"github.com/twinj/uuid"
+	"github.com/satori/go.uuid"
 )
 
 // SQLReader for reading events
@@ -30,9 +30,10 @@ func (r *SQLReader) Read(sourceID uuid.UUID) ([]Event, error) {
 	for rows.Next() {
 		var event = new(Event)
 
-		if err := rows.Scan(&event.Id, &event.SourceID, &event.Created, &event.Payload, &event.EventType, &event.Version); err != nil {
+		if err := rows.Scan(&event.ID, &event.SourceID, &event.Created, &event.EventType, &event.Version, &event.Payload); err != nil {
 			return nil, err
 		}
+
 		events = append(events, *event)
 	}
 

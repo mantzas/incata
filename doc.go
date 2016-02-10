@@ -128,7 +128,7 @@ The example below uses MS SQL Server and JSON serialization.
  	"github.com/mantzas/incata/relational"
  	"github.com/mantzas/incata/serializer"
  	"github.com/mantzas/incata/writer"
- 	"github.com/twinj/uuid"
+ 	"github.com/satori/go.uuid"
  )
 
  type Payload struct {
