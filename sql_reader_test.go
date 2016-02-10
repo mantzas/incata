@@ -4,8 +4,9 @@ import (
 	"database/sql/driver"
 	"testing"
 
-	//"github.com/DATA-DOG/go-sqlmock"
+	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/satori/go.uuid"
+	"time"
 )
 
 type AnyType struct{}
@@ -17,45 +18,28 @@ func (a AnyType) Match(v driver.Value) bool {
 
 func TestSqlReaderRead(t *testing.T) {
 
-	t.SkipNow()
-	//
-	// 	db, mock, err := sqlmock.New()
-	// 	if err != nil {
-	// 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
-	// 	}
-	// 	defer db.Close()
-	//
-	// 	var sourceID = uuid.NewV4()
-	//
-	// 	rows := sqlmock.NewRows([]string{"Id", "SourceId", "Created", "EventType", "Version", "Payload"})
-	//
-	// 	mock.ExpectQuery("SELECT").WithArgs(sourceID.String()).WillReturnRows(rows)
-	//
-	// 	storage, _ := NewDbFinalized(db, MSSQL)
-	// 	marshaller := NewJSONMarshaller()
-	// 	reader := NewSQLReader(storage, marshaller)
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+	}
+	defer db.Close()
 
-	// 	_, err = reader.Read(sourceID)
-	// 	if err != nil {
-	// 		t.Fatalf("unexpected err: %s", err)
-	// 	}
-	//
-	// 	if err = mock.ExpectationsWereMet(); err != nil {
-	// 		t.Fatalf("there were unfulfilled expections: %s", err)
-	// 	}
-}
+	var sourceID = uuid.NewV4()
 
-func TestUnmarshalUUID(t *testing.T) {
+	rows := sqlmock.NewRows([]string{"Id", "SourceId", "Created", "EventType", "Version", "Payload"}).AddRow(1, uuid.NewV4().String(), time.Now, "Test", 1, "123")
 
-	srcID := uuid.NewV4()
+	mock.ExpectQuery("SELECT").WithArgs(sourceID.String()).WillReturnRows(rows)
 
-	srcIDBytes := srcID.Bytes()
+	storage, _ := NewDbFinalized(db, MSSQL)
+	marshaller := NewJSONMarshaller()
+	reader := NewSQLReader(storage, marshaller)
 
-	var srcIDResult uuid.UUID
+	_, err = reader.Read(sourceID)
+	if err != nil {
+		t.Fatalf("unexpected err: %s", err)
+	}
 
-	srcIDResult, _ = uuid.FromBytes(srcIDBytes)
-
-	if !uuid.Equal(srcID, srcIDResult) {
-		t.Fatalf("are not equal %s %s", srcID, srcIDResult)
+	if err = mock.ExpectationsWereMet(); err != nil {
+		t.Fatalf("there were unfulfilled expections: %s", err)
 	}
 }
