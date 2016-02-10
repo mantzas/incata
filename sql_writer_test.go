@@ -27,8 +27,8 @@ func TestSqlWriterWrite(t *testing.T) {
 	defer db.Close()
 
 	ser := NewJSONMarshaller()
-	database, _ := NewDbFinalized(db, MSSQL)
-	wr := NewSQLWriter(database, ser)
+	storage, _ := NewStorageFinalized(db, MSSQL, "Event")
+	wr := NewSQLWriter(storage, ser)
 
 	event := NewEvent(uuid.NewV4(), 1, "TEST", 1)
 	payload, _ := ser.Serialize(event.Payload)
@@ -54,8 +54,8 @@ func TestSqlWriterWriteDbError(t *testing.T) {
 	defer db.Close()
 
 	ser := NewJSONMarshaller()
-	database, _ := NewDbFinalized(db, MSSQL)
-	wr := NewSQLWriter(database, ser)
+	storage, _ := NewStorageFinalized(db, MSSQL, "Event")
+	wr := NewSQLWriter(storage, ser)
 
 	event := NewEvent(uuid.NewV4(), 1, "TEST", 1)
 	payload, _ := ser.Serialize(event.Payload)
@@ -82,8 +82,8 @@ func TestSqlWriterWriteSerializationError(t *testing.T) {
 	defer db.Close()
 
 	ser := NewJSONMarshaller()
-	database, _ := NewDbFinalized(db, MSSQL)
-	wr := NewSQLWriter(database, ser)
+	storage, _ := NewStorageFinalized(db, MSSQL, "Event")
+	wr := NewSQLWriter(storage, ser)
 
 	event := NewEvent(uuid.NewV4(), make(map[int]int), "TEST", 1)
 
@@ -102,20 +102,20 @@ func BenchmarkAppenderPostgresql(b *testing.B) {
 
 	b.Skipf("Postgresql benchmark!")
 
-	db, err := NewDb(PostgreSQL, "postgres://user:pwd@server/linear?sslmode=disable")
+	storage, err := NewStorage(PostgreSQL, "postgres://user:pwd@server/linear?sslmode=disable", "linearevents")
 
 	if err != nil {
 		b.Fatalf("Fatal error %s", err.Error())
 	}
 
-	runDatabaseBenchmark(b, db)
+	runDatabaseBenchmark(b, storage)
 }
 
 func BenchmarkAppenderMsSql(b *testing.B) {
 
 	b.Skipf("SQL Server benchmark!")
 
-	db, err := NewDb(MSSQL, "Server=xxx;Database=sss;User Id=xx;Password=xxx;")
+	db, err := NewStorage(MSSQL, "Server=xxx;Database=sss;User Id=xx;Password=xxx;", "Event")
 
 	if err != nil {
 		b.Fatalf("Fatal error %s", err.Error())

@@ -7,47 +7,47 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 )
 
-func TestDbExec(t *testing.T) {
+func TestStorageExec(t *testing.T) {
 
 	dbInner, mock, _ := sqlmock.New()
 
-	db, _ := NewDbFinalized(dbInner, MSSQL)
+	storage, _ := NewStorageFinalized(dbInner, MSSQL, "Event")
 
 	mock.ExpectExec("123").WithArgs(1, 2, 3).WillReturnResult(sqlmock.NewResult(1, 1))
 
-	db.Exec("123", 1, 2, 3)
+	storage.Exec("123", 1, 2, 3)
 
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Fatalf("Expectations not met, %s", err)
 	}
 }
 
-func TestDbQuery(t *testing.T) {
+func TestStorageQuery(t *testing.T) {
 
 	dbInner, mock, _ := sqlmock.New()
 
-	db, _ := NewDbFinalized(dbInner, PostgreSQL)
+	storage, _ := NewStorageFinalized(dbInner, PostgreSQL, "Event")
 
 	var rows driver.Rows
 
 	mock.ExpectQuery("123").WithArgs(1, 2, 3).WillReturnRows(rows)
 
-	db.Query("123", 1, 2, 3)
+	storage.Query("123", 1, 2, 3)
 
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Fatalf("Expectations not met, %s", err)
 	}
 }
 
-func TestDbClose(t *testing.T) {
+func TestStorageClose(t *testing.T) {
 
 	dbInner, mock, _ := sqlmock.New()
 
-	db, _ := NewDbFinalized(dbInner, MSSQL)
+	storage, _ := NewStorageFinalized(dbInner, MSSQL, "Event")
 
 	mock.ExpectClose()
 
-	db.Close()
+	storage.Close()
 
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Fatalf("Expectations not met, %s", err)

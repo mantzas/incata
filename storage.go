@@ -57,10 +57,10 @@ func (db *Storage) Close() (err error) {
 	return
 }
 
-// NewDb return a new MS SQL Server Db object
-func NewDb(dbType DbType, connection string) (*Storage, error) {
+// NewStorage creates a new storage
+func NewStorage(dbType DbType, connection string, tableName string) (*Storage, error) {
 
-	driver, appendStmt, selectStmt, err := getStatements(dbType)
+	driver, appendStmt, selectStmt, err := getStatements(dbType, tableName)
 	if err != nil {
 		return nil, err
 	}
@@ -84,10 +84,10 @@ func NewDb(dbType DbType, connection string) (*Storage, error) {
 	return storage, nil
 }
 
-// NewDbFinalized creates a new Db object with setup db argument
-func NewDbFinalized(db *sql.DB, dbType DbType) (*Storage, error) {
+// NewStorageFinalized creates a new storage with a passed in db argument
+func NewStorageFinalized(db *sql.DB, dbType DbType, tableName string) (*Storage, error) {
 
-	_, appendStmt, selectStmt, err := getStatements(dbType)
+	_, appendStmt, selectStmt, err := getStatements(dbType, tableName)
 	if err != nil {
 		return nil, err
 	}
@@ -101,17 +101,17 @@ func NewDbFinalized(db *sql.DB, dbType DbType) (*Storage, error) {
 	return storage, nil
 }
 
-func getStatements(dbType DbType) (string, string, string, error) {
+func getStatements(dbType DbType, tableName string) (string, string, string, error) {
 
 	switch dbType {
 
 	case MSSQL:
-		return "mssql", `INSERT INTO Event (SourceId, Created, EventType, Version, Payload) VALUES (?, ?, ?, ?, ?)`,
-			`SELECT Id ,SourceId ,Created ,EventType ,Version ,Payload FROM Event WHERE SourceId = ?`, nil
+		return "mssql", fmt.Sprintf("INSERT INTO %s (SourceId, Created, EventType, Version, Payload) VALUES (?, ?, ?, ?, ?)", tableName),
+			fmt.Sprintf("SELECT Id ,SourceId ,Created ,EventType ,Version ,Payload FROM %s WHERE SourceId = ?", tableName), nil
 
 	case PostgreSQL:
-		return "postgres", `INSERT INTO linearevents ("SourceId", "Created", "EventType", "Version", "Payload") VALUES ($1, $2, $3, $4, $5)`,
-			`SELECT "Id", "SourceId", "Created", "EventType", "Version", "Payload" FROM linearevents WHERE "SourceId" = $1`, nil
+		return "postgres", fmt.Sprintf(`INSERT INTO %s ("SourceId", "Created", "EventType", "Version", "Payload") VALUES ($1, $2, $3, $4, $5)`, tableName),
+			fmt.Sprintf(`SELECT "Id", "SourceId", "Created", "EventType", "Version", "Payload" FROM %s WHERE "SourceId" = $1`, tableName), nil
 
 	default:
 		return "", "", "", fmt.Errorf("DB type %d is not supported", dbType)
