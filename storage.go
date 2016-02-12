@@ -3,6 +3,7 @@ package incata
 import (
 	"database/sql"
 	"fmt"
+    "strings"
 )
 
 // DbType defines the type of the db
@@ -15,14 +16,14 @@ const (
 )
 
 var dbTypeMap = map[string]DbType{
-	"MSSQL":      MSSQL,
-	"PostgreSQL": PostgreSQL,
+	"mssql":      MSSQL,
+	"postgresql": PostgreSQL,
 }
 
 // ConvertToDbType convert's a string to a DbType
 func ConvertToDbType(value string) (DbType, error) {
 
-	dbType, ok := dbTypeMap[value]
+	dbType, ok := dbTypeMap[strings.ToLower(value)]
 
 	if ok {
 		return dbType, nil
