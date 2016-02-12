@@ -30,7 +30,7 @@ In order to use the appender or retriever we have to provide the following
 
 The supported relational DB's are MS Sql Server and PostgreSQL.
 
-Check out the examples in the examples folder for setting up the default marshaller and reader/writers.
+###Check out the examples in the examples folder for setting up the default marshaller and reader/writers.
 
 ###MS SQL Server Setup
 
