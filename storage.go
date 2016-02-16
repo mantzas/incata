@@ -46,7 +46,7 @@ func (db *Storage) Exec(query string, args ...interface{}) (*sql.Result, error) 
 	return &result, err
 }
 
-// Query executes a query statment
+// Query executes a query statement
 func (db *Storage) Query(query string, args ...interface{}) (*sql.Rows, error) {
 	rows, err := db.innerDb.Query(query, args...)
 	return rows, err
