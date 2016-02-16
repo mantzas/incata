@@ -37,10 +37,10 @@ Check out the examples in the examples folder for setting up the default marshal
 
 MS SQL Server Setup
 
-SQL Server Driver used: 
- 
+SQL Server Driver used:
+
     "github.com/denisenkom/go-mssqldb"
-    
+
 DB Table setup (Provide a table name)
 
         CREATE TABLE {TableName} (
@@ -61,10 +61,10 @@ DB Table setup (Provide a table name)
          GO
 
 PostgreSQL Setup
-         
+
 PostgreSQL Driver used:
-    
-    "github.com/lib/pq" 
+
+    "github.com/lib/pq"
 
 DB Table setup (Provide a table name)
 

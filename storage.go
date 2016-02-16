@@ -3,7 +3,7 @@ package incata
 import (
 	"database/sql"
 	"fmt"
-    "strings"
+	"strings"
 )
 
 // DbType defines the type of the db
