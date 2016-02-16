@@ -1,4 +1,4 @@
-# incata [![alt text](https://godoc.org/github.com/mantzas/incata?status.png)](https://godoc.org/github.com/mantzas/incata)&nbsp;[![build status](https://img.shields.io/travis/mantzas/incata.svg)](http://travis-ci.org/mantzas/incata)&nbsp;[![Coverage Status](https://coveralls.io/repos/github/mantzas/incata/badge.svg?branch=master)](https://coveralls.io/github/mantzas/incata?branch=master)
+# incata [![alt text](https://godoc.org/github.com/mantzas/incata?status.png)](https://godoc.org/github.com/mantzas/incata)&nbsp;[![build status](https://img.shields.io/travis/mantzas/incata.svg)](http://travis-ci.org/mantzas/incata)&nbsp;[![Coverage Status](https://coveralls.io/repos/github/mantzas/incata/badge.svg?branch=master)](https://coveralls.io/github/mantzas/incata?branch=master)&nbsp;[![Go Report Card](https://goreportcard.com/badge/github.com/mantzas/incata)](https://goreportcard.com/report/github.com/mantzas/incata)
 
 Event Sourcing Data Access Library
 
