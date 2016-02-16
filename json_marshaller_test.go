@@ -64,7 +64,7 @@ func TestJsonDeserializer(t *testing.T) {
 	err = NewJSONMarshaller().Deserialize(actualData, &actual)
 
 	if expected.Version != actual.Version {
-		t.Fatalf("Version Expected: %s Actual: %s", expected.Version, actual.Version)
+		t.Fatalf("Version Expected: %d Actual: %d", expected.Version, actual.Version)
 	}
 
 	if expected.Name != actual.Name {
@@ -72,7 +72,7 @@ func TestJsonDeserializer(t *testing.T) {
 	}
 
 	if expected.Balance != actual.Balance {
-		t.Fatalf("Balance Expected: %d Actual: %d", expected.Balance, actual.Balance)
+		t.Fatalf("Balance Expected: %f Actual: %f", expected.Balance, actual.Balance)
 	}
 
 	if !expected.BirthDate.Equal(actual.BirthDate) {
