@@ -108,7 +108,7 @@ func getStatements(dbType DbType, tableName string) (string, string, string, err
 
 	case MSSQL:
 		return "mssql", fmt.Sprintf("INSERT INTO %s (SourceId, Created, EventType, Version, Payload) VALUES (?, ?, ?, ?, ?)", tableName),
-			fmt.Sprintf("SELECT Id ,SourceId ,Created ,EventType ,Version ,Payload FROM %s WHERE SourceId = ?", tableName), nil
+			fmt.Sprintf("SELECT Id, CAST(SourceId AS CHAR(36)), Created, EventType, Version, Payload FROM %s WHERE SourceId = ?", tableName), nil
 
 	case PostgreSQL:
 		return "postgres", fmt.Sprintf(`INSERT INTO %s ("SourceId", "Created", "EventType", "Version", "Payload") VALUES ($1, $2, $3, $4, $5)`, tableName),
