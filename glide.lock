@@ -1,13 +1,21 @@
 hash: a8d4404982de17b2b143d2a7d7048a98d8bbd14981097a833bec7868c1f86ec8
-updated: 2016-02-10T22:39:29.0048868+02:00
+updated: 2016-02-20T00:28:03.004115567+02:00
 imports:
 - name: github.com/DATA-DOG/go-sqlmock
-  version: f49a90b6f7f3763b76ca1618f1bbd6189239be7a
-- name: github.com/kisielk/sqlstruct
-  version: 648daed35d49dac24a4bff253b190a80da3ab6a5
+  version: 808cdc9973787bc4d423563529b628a1b31068de
+- name: github.com/denisenkom/go-mssqldb
+  version: 6e7f3d73dade2e5566f87d18c3a1d00d2ce33421
+- name: github.com/lib/pq
+  version: 69552e54d2a9d4c6a2438926a774930f7bc398ec
+  subpackages:
+  - oid
 - name: github.com/mantzas/adaptlog
   version: ad3caae9692d52f219754d371720ee3ccc41f5ee
   vcs: git
 - name: github.com/satori/go.uuid
-  version: d41af8bb6a7704f00bc3b7cba9355ae6a5a80048
+  version: e673fdd4dea8a7334adbbe7f57b7e4b00bdc5502
+- name: golang.org/x/crypto
+  version: 1f22c0103821b9390939b6776727195525381532
+  subpackages:
+  - md4
 devImports: []
