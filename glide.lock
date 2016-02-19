@@ -1,5 +1,5 @@
-hash: a8d4404982de17b2b143d2a7d7048a98d8bbd14981097a833bec7868c1f86ec8
-updated: 2016-02-20T00:28:03.004115567+02:00
+hash: d18baf09225e164b2246c6b151bafedab4e5c63bea1706c34b4fe04486ac4021
+updated: 2016-02-20T00:41:59.036296374+02:00
 imports:
 - name: github.com/DATA-DOG/go-sqlmock
   version: 808cdc9973787bc4d423563529b628a1b31068de
@@ -9,9 +9,6 @@ imports:
   version: 69552e54d2a9d4c6a2438926a774930f7bc398ec
   subpackages:
   - oid
-- name: github.com/mantzas/adaptlog
-  version: ad3caae9692d52f219754d371720ee3ccc41f5ee
-  vcs: git
 - name: github.com/satori/go.uuid
   version: e673fdd4dea8a7334adbbe7f57b7e4b00bdc5502
 - name: golang.org/x/crypto
