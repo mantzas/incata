@@ -12,7 +12,10 @@ import (
 	_ "github.com/denisenkom/go-mssqldb" // import sql driver
 	_ "github.com/lib/pq"                // import postgrsql driver
 	"github.com/mantzas/incata"
-    "github.com/mantzas/incata/model"
+	"github.com/mantzas/incata/marshal"
+	"github.com/mantzas/incata/model"
+	"github.com/mantzas/incata/reader"
+	"github.com/mantzas/incata/storage"
 	"github.com/satori/go.uuid"
 )
 
@@ -38,20 +41,20 @@ func main() {
 	fmt.Printf("Max Procs: %d", runtime.NumCPU())
 	fmt.Println()
 
-	dbType, err := incata.ConvertToDbType(*dbTypeInput)
+	dbType, err := storage.ConvertToDbType(*dbTypeInput)
 	if err != nil {
 		panic(err.Error())
 	}
 
 	fmt.Println(*connection)
 
-	storage, err := incata.NewStorage(dbType, *connection, *dbName)
+	storage, err := storage.NewStorage(dbType, *connection, *dbName)
 
 	if err != nil {
 		panic(err)
 	}
 
-	sr := incata.NewJSONMarshaller()
+	sr := marshal.NewJSONMarshaller()
 	wr := incata.NewSQLWriter(storage, sr)
 
 	incata.SetupAppender(wr)
@@ -85,7 +88,7 @@ func main() {
 	fmt.Printf("Finished appending events in %s. %s per event", timePassed, timeDurationPerEvent)
 	fmt.Println()
 
-	reader := incata.NewSQLReader(storage, sr)
+	reader := reader.NewSQLReader(storage, sr)
 	incata.SetupRetriever(reader)
 
 	retriever, err := incata.NewRetriever()
