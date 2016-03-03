@@ -3,74 +3,42 @@ package incata
 import (
 	. "github.com/mantzas/incata/mocks"
 	. "github.com/mantzas/incata/model"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 	"github.com/satori/go.uuid"
-	"testing"
 )
 
-func TestRetrieverWithoutSetup(t *testing.T) {
-	_, err := NewRetriever()
+var _ = Describe("Retriever", func() {
 
-	if err == nil {
-		t.Fatal("Error should have occured!")
-	}
-}
+	It("create a new appender without setup", func() {
 
-func TestRetriever(t *testing.T) {
+		SetupRetriever(nil)
+		retriever, err := NewRetriever()
+		Expect(retriever).To(BeNil())
+		Expect(err).To(MatchError("Reader is not set up!"))
+	})
 
-	var sourceID = uuid.NewV4()
-	var data = make([]Event, 0)
+	It("retrieve data succeeds", func() {
 
-	data = append(data, *NewEvent(uuid.NewV4(), GetTestData(), "TEST", 1))
-	data = append(data, *NewEvent(sourceID, GetTestData(), "TEST", 1))
-	data = append(data, *NewEvent(uuid.NewV4(), GetTestData(), "TEST", 1))
-	data = append(data, *NewEvent(sourceID, GetTestData(), "TEST", 1))
-	data = append(data, *NewEvent(uuid.NewV4(), GetTestData(), "TEST", 1))
+		var sourceID = uuid.NewV4()
+		var data = make([]Event, 0)
 
-	rd := NewMemoryReader(data)
+		data = append(data, *NewEvent(uuid.NewV4(), GetTestData(), "TEST", 1))
+		data = append(data, *NewEvent(sourceID, GetTestData(), "TEST", 1))
+		data = append(data, *NewEvent(uuid.NewV4(), GetTestData(), "TEST", 1))
+		data = append(data, *NewEvent(sourceID, GetTestData(), "TEST", 1))
+		data = append(data, *NewEvent(uuid.NewV4(), GetTestData(), "TEST", 1))
 
-	SetupRetriever(rd)
+		rd := NewMemoryReader(data)
 
-	r, err := NewRetriever()
+		SetupRetriever(rd)
 
-	if err != nil {
-		t.Fatal("Error getting new retriever!")
-	}
+		r, err := NewRetriever()
+		Expect(err).NotTo(HaveOccurred())
 
-	events, err := r.Retrieve(sourceID)
+		events, err := r.Retrieve(sourceID)
+		Expect(err).NotTo(HaveOccurred())
 
-	if err != nil {
-		t.Fatal("Error retrieving events!")
-	}
-
-	if len(events) != 2 {
-		t.Fatalf("Expected 2 events but was %d", len(events))
-	}
-}
-
-// MemoryReader for memory reading
-type MemoryReader struct {
-	Data []Event
-}
-
-// NewMemoryReader creates a new memory reader
-func NewMemoryReader(data []Event) *MemoryReader {
-
-	return &MemoryReader{
-		Data: data,
-	}
-}
-
-// Write writes a value to a string slice
-func (r *MemoryReader) Read(sourceID uuid.UUID) ([]Event, error) {
-
-	var events = make([]Event, 0)
-
-	for _, event := range r.Data {
-
-		if event.SourceID == sourceID {
-			events = append(events, event)
-		}
-	}
-
-	return events, nil
-}
+		Expect(len(events)).To(Equal(2))
+	})
+})
