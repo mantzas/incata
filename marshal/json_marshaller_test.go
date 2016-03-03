@@ -4,108 +4,75 @@ import (
 	"testing"
 	"time"
 
+	. "github.com/mantzas/incata/marshal"
 	. "github.com/mantzas/incata/mocks"
-    . "github.com/mantzas/incata/marshal"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
-func TestJSONSerializer(t *testing.T) {
+var _ = Describe("Marshal", func() {
 
-	expectedString := `{"version":1,"name":"Joe","balance":12.99,"birth_date":"2015-12-13T23:59:59+02:00"}`
+	It("serialize test data to json and match", func() {
+		expectedString := `{"version":1,"name":"Joe","balance":12.99,"birth_date":"2015-12-13T23:59:59+02:00"}`
 
-	location, err := time.LoadLocation("Europe/Athens")
+		location, _ := time.LoadLocation("Europe/Athens")
 
-	if err != nil {
-		t.Fatalf("Error getting location!")
-	}
+		testData := TestData{
+			Version:   1,
+			Name:      "Joe",
+			Balance:   12.99,
+			BirthDate: time.Date(2015, 12, 13, 23, 59, 59, 0, location),
+		}
 
-	testData := TestData{
-		Version:   1,
-		Name:      "Joe",
-		Balance:   12.99,
-		BirthDate: time.Date(2015, 12, 13, 23, 59, 59, 0, location),
-	}
+		serializedString, err := NewJSONMarshaller().Serialize(testData)
 
-	serializedString, err := NewJSONMarshaller().Serialize(testData)
+		Expect(serializedString).To(Equal(expectedString))
+		Expect(err).NotTo(HaveOccurred())
+	})
 
-	if err != nil {
-		t.Fatalf("Error in serialization! %s", err)
-	}
+	It("serialize unsupported data type fails", func() {
+		var m = make(map[int]int, 0)
+		_, err := NewJSONMarshaller().Serialize(m)
 
-	if expectedString != serializedString {
-		t.Fatalf("Expected %s is different than serialized %s", expectedString, serializedString)
-	}
-}
+		Expect(err).To(HaveOccurred())
+	})
 
-func TestJSONSerializerWithNull(t *testing.T) {
+	It("deserialize json to test data and match", func() {
+		location, _ := time.LoadLocation("Europe/Athens")
 
-	var m = make(map[int]int, 0)
-	payload, err := NewJSONMarshaller().Serialize(m)
+		expected := TestData{
+			Version:   1,
+			Name:      "Joe",
+			Balance:   12.99,
+			BirthDate: time.Date(2015, 12, 13, 23, 59, 59, 0, location),
+		}
 
-	if err == nil {
-		t.Fatalf("Should have failed! %s", payload)
-	}
-}
+		actualData := `{"version":1,"name":"Joe","balance":12.99,"birth_date":"2015-12-13T23:59:59+02:00"}`
+		var actual TestData
 
-func TestJsonDeserializer(t *testing.T) {
+		err := NewJSONMarshaller().Deserialize(actualData, &actual)
 
-	location, err := time.LoadLocation("Europe/Athens")
+		Expect(actual.Balance).To(Equal(expected.Balance))
+		Expect(actual.BirthDate.Equal(expected.BirthDate)).To(BeTrue())
+		Expect(actual.Name).To(Equal(expected.Name))
+		Expect(actual.Version).To(Equal(expected.Version))
+		Expect(err).NotTo(HaveOccurred())
+	})
 
-	if err != nil {
-		t.Fatalf("Error getting location!")
-	}
+	It("deserialize fails due to invalid json", func() {
 
-	expected := TestData{
-		Version:   1,
-		Name:      "Joe",
-		Balance:   12.99,
-		BirthDate: time.Date(2015, 12, 13, 23, 59, 59, 0, location),
-	}
+		var actual TestData
+		err := NewJSONMarshaller().Deserialize(`{"version":1,"name":"Joe","balance":12.99,"birth_date":"2015-12-13T23:59:59+02:00------"}`, &actual)
+		Expect(err).To(HaveOccurred())
+	})
 
-	actualData := `{"version":1,"name":"Joe","balance":12.99,"birth_date":"2015-12-13T23:59:59+02:00"}`
-	var actual TestData
+	It("deserialize wrong to the struct", func() {
 
-	err = NewJSONMarshaller().Deserialize(actualData, &actual)
-
-	if expected.Version != actual.Version {
-		t.Fatalf("Version Expected: %d Actual: %d", expected.Version, actual.Version)
-	}
-
-	if expected.Name != actual.Name {
-		t.Fatalf("Name Expected: %s Actual: %s", expected.Name, actual.Name)
-	}
-
-	if expected.Balance != actual.Balance {
-		t.Fatalf("Balance Expected: %f Actual: %f", expected.Balance, actual.Balance)
-	}
-
-	if !expected.BirthDate.Equal(actual.BirthDate) {
-		t.Fatalf("BirthDate Expected: %s Actual: %s", expected.BirthDate, actual.BirthDate)
-	}
-}
-
-func TestJsonDeserializerError(t *testing.T) {
-
-	actualData := `{"version":1,"name":"Joe","balance":12.99,"birth_date":"2015-12-13T23:59:59+02:00------"}`
-
-	var actual TestData
-
-	err := NewJSONMarshaller().Deserialize(actualData, &actual)
-
-	if err == nil {
-		t.Fatal("Should have raised a error")
-	}
-}
-
-func TestJsonDeserializerWrongTypeError(t *testing.T) {
-
-	var actual TestData
-
-	err := NewJSONMarshaller().Deserialize(123, &actual)
-
-	if err == nil {
-		t.Fatal("Should have raised a error")
-	}
-}
+		var actual TestData
+		err := NewJSONMarshaller().Deserialize(123, &actual)
+		Expect(err).To(HaveOccurred())
+	})
+})
 
 func BenchmarkJSONSerializer(b *testing.B) {
 

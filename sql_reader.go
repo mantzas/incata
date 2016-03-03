@@ -1,8 +1,8 @@
 package incata
 
 import (
+	"github.com/mantzas/incata/marshal"
 	"github.com/mantzas/incata/model"
-    "github.com/mantzas/incata/marshal"
 	"github.com/satori/go.uuid"
 )
 

@@ -6,9 +6,9 @@ import (
 
 	"errors"
 	"github.com/DATA-DOG/go-sqlmock"
+	. "github.com/mantzas/incata/marshal"
 	"github.com/satori/go.uuid"
 	"time"
-    . "github.com/mantzas/incata/marshal"
 )
 
 type AnyType struct{}
