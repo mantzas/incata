@@ -1,36 +1,25 @@
-package incata
+package incata_test
 
 import (
+    
+    . "github.com/mantzas/incata"
+    . "github.com/onsi/ginkgo"
+    . "github.com/onsi/gomega"
+    
 	"github.com/satori/go.uuid"
-
-	"testing"
 	"time"
 )
 
-func TestNewEvent(t *testing.T) {
+var _ = Describe("Event", func() {
 
-	username := "user name"
-	event := NewEvent(uuid.NewV4(), username, "test type", 1)
+	It("create a new event when calling initializer function", func() {
+        
+        username := "user name"
+        event := NewEvent(uuid.NewV4(), username, "test type", 1)
 
-	if event.Version != 1 {
-
-		t.Fatalf("Version number wrong! %d", event.Version)
-	}
-
-	if event.EventType != "test type" {
-
-		t.Fatalf("EventType number wrong! %s", event.EventType)
-	}
-
-	if event.Payload != username {
-
-		t.Fatalf("Payload wrong! %s", event.Payload)
-	}
-
-	utcNow := time.Now().UTC()
-
-	if event.Created.After(utcNow) {
-
-		t.Fatalf("Time is not less or equal! %s", event.Created)
-	}
-}
+        Expect(event.Version).To(Equal(1))
+        Expect(event.EventType).To(Equal("test type"))
+        Expect(event.Payload).To(Equal(username))
+        Expect(event.Created.After(time.Now().UTC())).To(BeFalse())
+    })
+})
