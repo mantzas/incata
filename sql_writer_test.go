@@ -9,6 +9,7 @@ import (
 	. "github.com/mantzas/incata/marshal"
 	. "github.com/mantzas/incata/mocks"
 	. "github.com/mantzas/incata/model"
+	. "github.com/mantzas/incata/storage"
 
 	"github.com/satori/go.uuid"
 	"time"

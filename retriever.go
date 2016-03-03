@@ -3,6 +3,7 @@ package incata
 import (
 	"errors"
 	"github.com/mantzas/incata/model"
+	"github.com/mantzas/incata/reader"
 	"github.com/satori/go.uuid"
 )
 
@@ -13,13 +14,13 @@ type Retriever interface {
 
 // EventRetriever Append events to storage
 type EventRetriever struct {
-	Reader Reader
+	Reader reader.Reader
 }
 
-var rd Reader
+var rd reader.Reader
 
 // SetupRetriever setting up the retriever
-func SetupRetriever(reader Reader) {
+func SetupRetriever(reader reader.Reader) {
 	rd = reader
 }
 

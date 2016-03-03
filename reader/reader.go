@@ -1,4 +1,4 @@
-package incata
+package reader
 
 import (
 	"github.com/mantzas/incata/model"

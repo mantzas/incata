@@ -1,19 +1,20 @@
-package incata
+package reader
 
 import (
 	"github.com/mantzas/incata/marshal"
 	"github.com/mantzas/incata/model"
+	"github.com/mantzas/incata/storage"
 	"github.com/satori/go.uuid"
 )
 
 // SQLReader for reading events
 type SQLReader struct {
-	Storage    *Storage
+	Storage    *storage.Storage
 	Serializer marshal.Serializer
 }
 
 // NewSQLReader creates a new sql reader
-func NewSQLReader(storage *Storage, ser marshal.Serializer) *SQLReader {
+func NewSQLReader(storage *storage.Storage, ser marshal.Serializer) *SQLReader {
 
 	return &SQLReader{Storage: storage, Serializer: ser}
 }

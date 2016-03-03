@@ -1,4 +1,4 @@
-package incata
+package storage
 
 import (
 	"database/sql"
