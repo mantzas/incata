@@ -8,6 +8,7 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	. "github.com/mantzas/incata/mocks"
 	. "github.com/mantzas/incata/model"
+    . "github.com/mantzas/incata/marshal"
 
 	"github.com/satori/go.uuid"
 	"time"

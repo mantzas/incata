@@ -1,10 +1,11 @@
-package incata
+package marshal_test
 
 import (
 	"testing"
 	"time"
 
 	. "github.com/mantzas/incata/mocks"
+    . "github.com/mantzas/incata/marshal"
 )
 
 func TestJSONSerializer(t *testing.T) {

@@ -1,4 +1,4 @@
-package incata
+package marshal
 
 // Serializer interface
 type Serializer interface {

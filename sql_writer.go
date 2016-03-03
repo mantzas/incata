@@ -1,15 +1,18 @@
 package incata
 
-import "github.com/mantzas/incata/model"
+import (
+    "github.com/mantzas/incata/model"
+    "github.com/mantzas/incata/marshal"
+)
 
 // SQLWriter writer for writing events
 type SQLWriter struct {
 	Storage    *Storage
-	Serializer Serializer
+	Serializer marshal.Serializer
 }
 
 // NewSQLWriter creates a new sql writer
-func NewSQLWriter(storage *Storage, ser Serializer) *SQLWriter {
+func NewSQLWriter(storage *Storage, ser marshal.Serializer) *SQLWriter {
 
 	return &SQLWriter{Storage: storage, Serializer: ser}
 }

@@ -78,4 +78,4 @@ fabric.properties
 
 # vendor
 /vendor
-incata.coverprofile
+*.coverprofile

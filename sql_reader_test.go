@@ -8,6 +8,7 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/satori/go.uuid"
 	"time"
+    . "github.com/mantzas/incata/marshal"
 )
 
 type AnyType struct{}

@@ -1,4 +1,4 @@
-package incata
+package marshal
 
 import (
 	"encoding/json"
