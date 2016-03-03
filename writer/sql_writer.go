@@ -1,4 +1,4 @@
-package incata
+package writer
 
 import (
 	"github.com/mantzas/incata/marshal"

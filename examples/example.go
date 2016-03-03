@@ -16,6 +16,7 @@ import (
 	"github.com/mantzas/incata/model"
 	"github.com/mantzas/incata/reader"
 	"github.com/mantzas/incata/storage"
+	"github.com/mantzas/incata/writer"
 	"github.com/satori/go.uuid"
 )
 
@@ -55,7 +56,7 @@ func main() {
 	}
 
 	sr := marshal.NewJSONMarshaller()
-	wr := incata.NewSQLWriter(storage, sr)
+	wr := writer.NewSQLWriter(storage, sr)
 
 	incata.SetupAppender(wr)
 
