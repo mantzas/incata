@@ -1,6 +1,7 @@
 package incata
 
 import (
+	"github.com/mantzas/incata/model"
 	"github.com/satori/go.uuid"
 )
 
@@ -17,7 +18,7 @@ func NewSQLReader(storage *Storage, ser Serializer) *SQLReader {
 }
 
 // Read from db with source id
-func (r *SQLReader) Read(sourceID uuid.UUID) ([]Event, error) {
+func (r *SQLReader) Read(sourceID uuid.UUID) ([]model.Event, error) {
 
 	rows, err := r.Storage.Query(r.Storage.SelectBySourceIDStatement, sourceID.String())
 	if err != nil {
@@ -25,10 +26,10 @@ func (r *SQLReader) Read(sourceID uuid.UUID) ([]Event, error) {
 	}
 	defer rows.Close()
 
-	var events = make([]Event, 0)
+	var events = make([]model.Event, 0)
 
 	for rows.Next() {
-		var event = new(Event)
+		var event = new(model.Event)
 
 		if err := rows.Scan(&event.ID, &event.SourceID, &event.Created, &event.EventType, &event.Version, &event.Payload); err != nil {
 			return nil, err

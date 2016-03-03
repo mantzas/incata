@@ -1,6 +1,8 @@
 package incata
 
 import (
+	. "github.com/mantzas/incata/mocks"
+	. "github.com/mantzas/incata/model"
 	"github.com/satori/go.uuid"
 	"testing"
 )
@@ -18,11 +20,11 @@ func TestRetriever(t *testing.T) {
 	var sourceID = uuid.NewV4()
 	var data = make([]Event, 0)
 
-	data = append(data, *NewEvent(uuid.NewV4(), getTestData(), "TEST", 1))
-	data = append(data, *NewEvent(sourceID, getTestData(), "TEST", 1))
-	data = append(data, *NewEvent(uuid.NewV4(), getTestData(), "TEST", 1))
-	data = append(data, *NewEvent(sourceID, getTestData(), "TEST", 1))
-	data = append(data, *NewEvent(uuid.NewV4(), getTestData(), "TEST", 1))
+	data = append(data, *NewEvent(uuid.NewV4(), GetTestData(), "TEST", 1))
+	data = append(data, *NewEvent(sourceID, GetTestData(), "TEST", 1))
+	data = append(data, *NewEvent(uuid.NewV4(), GetTestData(), "TEST", 1))
+	data = append(data, *NewEvent(sourceID, GetTestData(), "TEST", 1))
+	data = append(data, *NewEvent(uuid.NewV4(), GetTestData(), "TEST", 1))
 
 	rd := NewMemoryReader(data)
 

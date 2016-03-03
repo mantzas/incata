@@ -1,4 +1,4 @@
-package incata
+package model
 
 import (
 	"time"

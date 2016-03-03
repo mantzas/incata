@@ -6,6 +6,9 @@ import (
 
 	"database/sql/driver"
 	"github.com/DATA-DOG/go-sqlmock"
+	. "github.com/mantzas/incata/mocks"
+	. "github.com/mantzas/incata/model"
+
 	"github.com/satori/go.uuid"
 	"time"
 )
@@ -129,7 +132,7 @@ func runDatabaseBenchmark(b *testing.B, storage *Storage) {
 	ser := NewJSONMarshaller()
 	wr := NewSQLWriter(storage, ser)
 
-	event := NewEvent(uuid.NewV4(), getTestData(), "TEST", 1)
+	event := NewEvent(uuid.NewV4(), GetTestData(), "TEST", 1)
 
 	for n := 0; n < b.N; n++ {
 		err := wr.Write(*event)

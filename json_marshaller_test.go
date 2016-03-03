@@ -3,6 +3,8 @@ package incata
 import (
 	"testing"
 	"time"
+
+	. "github.com/mantzas/incata/mocks"
 )
 
 func TestJSONSerializer(t *testing.T) {

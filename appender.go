@@ -2,6 +2,7 @@ package incata
 
 import (
 	"errors"
+	"github.com/mantzas/incata/model"
 )
 
 // Appender interface
@@ -31,7 +32,7 @@ func NewAppender() (*EventAppender, error) {
 }
 
 // Append Append the payload to the storage
-func (appender *EventAppender) Append(event Event) error {
+func (appender *EventAppender) Append(event model.Event) error {
 
 	return appender.Writer.Write(event)
 }

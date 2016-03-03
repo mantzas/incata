@@ -1,5 +1,7 @@
 package incata
 
+import "github.com/mantzas/incata/model"
+
 // SQLWriter writer for writing events
 type SQLWriter struct {
 	Storage    *Storage
@@ -13,7 +15,7 @@ func NewSQLWriter(storage *Storage, ser Serializer) *SQLWriter {
 }
 
 // Write writes a value to db table
-func (w *SQLWriter) Write(event Event) error {
+func (w *SQLWriter) Write(event model.Event) error {
 
 	payloadText, err := w.Serializer.Serialize(event.Payload)
 	if err != nil {
