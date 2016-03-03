@@ -12,6 +12,7 @@ import (
 	_ "github.com/denisenkom/go-mssqldb" // import sql driver
 	_ "github.com/lib/pq"                // import postgrsql driver
 	"github.com/mantzas/incata"
+    "github.com/mantzas/incata/model"
 	"github.com/satori/go.uuid"
 )
 
@@ -66,7 +67,7 @@ func main() {
 
 		go func(index int) {
 			defer wg.Done()
-			event := incata.NewEvent(sourceID, payload{Description: string(index)}, "TestEvent", 1)
+			event := model.NewEvent(sourceID, payload{Description: string(index)}, "TestEvent", 1)
 			ar, err := incata.NewAppender()
 			if err != nil {
 				log.Print(err)
