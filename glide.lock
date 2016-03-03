@@ -1,18 +1,14 @@
 hash: d18baf09225e164b2246c6b151bafedab4e5c63bea1706c34b4fe04486ac4021
-updated: 2016-02-20T00:41:59.036296374+02:00
+updated: 2016-03-03T20:53:47.8722543+02:00
 imports:
 - name: github.com/DATA-DOG/go-sqlmock
-  version: 808cdc9973787bc4d423563529b628a1b31068de
+  version: 9958e5c69de03e97ec215b23f6fcae1f600c3fb6
 - name: github.com/denisenkom/go-mssqldb
   version: 6e7f3d73dade2e5566f87d18c3a1d00d2ce33421
 - name: github.com/lib/pq
-  version: 69552e54d2a9d4c6a2438926a774930f7bc398ec
+  version: e182dc4027e2ded4b19396d638610f2653295f36
   subpackages:
   - oid
 - name: github.com/satori/go.uuid
   version: e673fdd4dea8a7334adbbe7f57b7e4b00bdc5502
-- name: golang.org/x/crypto
-  version: 1f22c0103821b9390939b6776727195525381532
-  subpackages:
-  - md4
 devImports: []
