@@ -1,8 +1,6 @@
 package incata
 
 import (
-	"testing"
-
 	. "github.com/mantzas/incata/mocks"
 	. "github.com/mantzas/incata/model"
 	. "github.com/onsi/ginkgo"
@@ -31,20 +29,19 @@ var _ = Describe("Appender", func() {
 		Expect(err).NotTo(HaveOccurred())
 	})
 
+	Measure("benchmarking appender", func(b Benchmarker) {
+
+		var data = make([]Event, 0)
+		wr := NewMemoryWriter(data)
+		SetupAppender(wr)
+		appender, _ := NewAppender()
+		event := NewEvent(uuid.NewV4(), GetTestData(), "TEST", 1)
+
+		runtime := b.Time("runtime", func() {
+
+			appender.Append(*event)
+		})
+
+		Expect(runtime.Seconds()).Should(BeNumerically("<", 0.15), "Append() shouldn't take too long.")
+	}, 1000)
 })
-
-func BenchmarkAppender(b *testing.B) {
-
-	var data = make([]Event, 0)
-	wr := NewMemoryWriter(data)
-
-	SetupAppender(wr)
-
-	appender, _ := NewAppender()
-
-	event := NewEvent(uuid.NewV4(), GetTestData(), "TEST", 1)
-
-	for n := 0; n < b.N; n++ {
-		appender.Append(*event)
-	}
-}

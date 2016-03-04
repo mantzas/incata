@@ -1,7 +1,6 @@
 package marshal_test
 
 import (
-	"testing"
 	"time"
 
 	. "github.com/mantzas/incata/marshal"
@@ -72,26 +71,24 @@ var _ = Describe("Marshal", func() {
 		err := NewJSONMarshaller().Deserialize(123, &actual)
 		Expect(err).To(HaveOccurred())
 	})
+
+	Measure("benchmarking JSON serializer", func(b Benchmarker) {
+
+		var m = NewJSONMarshaller()
+		location, _ := time.LoadLocation("Europe/Athens")
+
+		testData := TestData{
+			Version:   1,
+			Name:      "Joe",
+			Balance:   12.99,
+			BirthDate: time.Date(2015, 12, 13, 23, 59, 59, 0, location),
+		}
+
+		runtime := b.Time("runtime", func() {
+
+			m.Serialize(testData)
+		})
+
+		Expect(runtime.Seconds()).Should(BeNumerically("<", 0.2), "Serialize shouldn't take too long.")
+	}, 1000)
 })
-
-func BenchmarkJSONSerializer(b *testing.B) {
-
-	var sert = NewJSONMarshaller()
-
-	location, err := time.LoadLocation("Europe/Athens")
-
-	if err != nil {
-		b.Fatalf("Error getting location!")
-	}
-
-	testData := TestData{
-		Version:   1,
-		Name:      "Joe",
-		Balance:   12.99,
-		BirthDate: time.Date(2015, 12, 13, 23, 59, 59, 0, location),
-	}
-
-	for n := 0; n < b.N; n++ {
-		sert.Serialize(testData)
-	}
-}
