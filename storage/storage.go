@@ -111,8 +111,8 @@ func getStatements(dbType DbType, tableName string) (string, string, string, err
 			fmt.Sprintf("SELECT Id, CAST(SourceId AS CHAR(36)), Created, EventType, Version, Payload FROM %s WHERE SourceId = ?", tableName), nil
 
 	case PostgreSQL:
-		return "postgres", fmt.Sprintf(`INSERT INTO %s ("SourceId", "Created", "EventType", "Version", "Payload") VALUES ($1, $2, $3, $4, $5)`, tableName),
-			fmt.Sprintf(`SELECT "Id", "SourceId", "Created", "EventType", "Version", "Payload" FROM %s WHERE "SourceId" = $1`, tableName), nil
+		return "postgres", fmt.Sprintf(`insert into %s ("source_id","created","event_type","version","payload") values ($1, $2, $3, $4, $5)`, tableName),
+			fmt.Sprintf(`SELECT id, source_id, created, event_type, version, payload FROM %s WHERE source_id = $1`, tableName), nil
 
 	default:
 		return "", "", "", fmt.Errorf("DB type %d is not supported", dbType)

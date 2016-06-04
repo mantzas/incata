@@ -67,19 +67,20 @@ DB Table setup (Provide a table name)
 
       CREATE TABLE {TableName}
       (
-       "Id" serial NOT NULL,
-       "SourceId" uuid,
-       "Created" timestamp without time zone,
-       "EventType" character varying(250),
-       "Version" integer,
-       "Payload" text,
-       CONSTRAINT "PK_Event" PRIMARY KEY ("Id")
+        id bigint NOT NULL DEFAULT nextval('order_event_id_seq'::regclass),
+        source_id uuid NOT NULL,
+        created time without time zone NOT NULL,
+        event_type character varying(250) NOT NULL,
+        version integer NOT NULL,
+        payload text NOT NULL,
+        CONSTRAINT pk_order_event_id PRIMARY KEY (id)
       )
       WITH (
-       OIDS=FALSE
+        OIDS=FALSE
       );
 
-      CREATE INDEX "event_idx_sourceId"
-       ON {TableName}
-       USING btree
-       ("SourceId");
+      CREATE INDEX ix_order_event_source_id
+        ON {TableName}
+        USING btree
+        (source_id);
+
