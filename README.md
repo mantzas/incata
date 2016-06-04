@@ -24,20 +24,20 @@ This means that our db table column for the Payload have to match the serializer
 
 In order to use the appender or retriever we have to provide the following
 
-1. a serializer or deserializer which implements the Serializer or Deserializer interface or the .  A JSONMarshaller is provided.
-2. a writer or reader which implements the Writer or Reader interface. A SQLWriter and SQLReader is provided.
-3. a appender and retriever which implement the Appender and Retriever interface. Appender and Retriever are provided.
+- A serializer or deserializer which implements the Serializer or Deserializer interface or the .  A JSONMarshaller is provided.
+- A writer or reader which implements the Writer or Reader interface. A SQLWriter and SQLReader is provided.
+- A appender and retriever which implement the Appender and Retriever interface. Appender and Retriever are provided.
 
 The supported relational DB's are MS Sql Server and PostgreSQL.
 
-###Check out the examples in the examples folder for setting up the default marshaller and reader/writers.
+## Check out the examples in the examples folder for setting up the default marshaller and reader/writers
 
-###MS SQL Server Setup
+### MS SQL Server Setup
 
- SQL Server Driver used: 
- 
+ SQL Server Driver used:
+
     "github.com/denisenkom/go-mssqldb"
-    
+
  DB Table setup (Provide a table name)
 
         CREATE TABLE {TableName} (
@@ -58,10 +58,10 @@ The supported relational DB's are MS Sql Server and PostgreSQL.
          GO
 
 ### PostgreSQL Setup
-         
+
 PostgreSQL Driver used:
-    
-    "github.com/lib/pq" 
+
+    "github.com/lib/pq"
 
 DB Table setup (Provide a table name)
 
@@ -83,4 +83,3 @@ DB Table setup (Provide a table name)
         ON {TableName}
         USING btree
         (source_id);
-
