@@ -9,7 +9,7 @@ import (
 
 // Appender interface
 type Appender interface {
-	Append(interface{}) error
+	Append(event model.Event) error
 }
 
 // EventAppender Append events to storage
