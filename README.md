@@ -69,7 +69,7 @@ DB Table setup (Provide a table name)
       (
         id bigint NOT NULL DEFAULT nextval('order_event_id_seq'::regclass),
         source_id uuid NOT NULL,
-        created time without time zone NOT NULL,
+        created timestamp with time zone NOT NULL,
         event_type character varying(250) NOT NULL,
         version integer NOT NULL,
         payload text NOT NULL,
