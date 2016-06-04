@@ -3,7 +3,7 @@
 Event Sourcing Data Access Library
 
 Package incata is a source eventing data access library. The name combines incremental (inc) and data (ata).
-Details about event sourcing can be read on Martin Fowlers site(http://martinfowler.com/eaaDev/EventSourcing.html).
+Details about event sourcing can be read on Martin Fowlers [site](http://martinfowler.com/eaaDev/EventSourcing.html).
 
 Currently we support two relational DB's, MS Sql Server and Postgresql.
 
