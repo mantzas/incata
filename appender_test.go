@@ -1,6 +1,8 @@
 package incata
 
 import (
+	"time"
+
 	. "github.com/mantzas/incata/mocks"
 	. "github.com/mantzas/incata/model"
 	. "github.com/onsi/ginkgo"
@@ -20,7 +22,7 @@ var _ = Describe("Appender", func() {
 
 	It("serialize with error", func() {
 
-		event := NewEvent(uuid.NewV4(), GetTestData(), "TEST", 1)
+		event := NewEvent(uuid.NewV4(), time.Now(), GetTestData(), "TEST", 1)
 		var data = make([]Event, 0)
 		wr := NewMemoryWriter(data)
 		SetupAppender(wr)
@@ -35,7 +37,7 @@ var _ = Describe("Appender", func() {
 		wr := NewMemoryWriter(data)
 		SetupAppender(wr)
 		appender, _ := NewAppender()
-		event := NewEvent(uuid.NewV4(), GetTestData(), "TEST", 1)
+		event := NewEvent(uuid.NewV4(), time.Now(), GetTestData(), "TEST", 1)
 
 		runtime := b.Time("runtime", func() {
 

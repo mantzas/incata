@@ -17,10 +17,10 @@ type Event struct {
 }
 
 // NewEvent creating a new event
-func NewEvent(sourceID uuid.UUID, payload interface{}, eventType string, version int) *Event {
+func NewEvent(sourceID uuid.UUID, created time.Time, payload interface{}, eventType string, version int) *Event {
 	return &Event{
 		SourceID:  sourceID,
-		Created:   time.Now().UTC(),
+		Created:   created.UTC(),
 		Payload:   payload,
 		EventType: eventType,
 		Version:   version,

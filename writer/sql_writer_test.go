@@ -39,7 +39,7 @@ var _ = Describe("Reader", func() {
 		storage, _ := NewStorageFinalized(db, MSSQL, "Event")
 		wr := NewSQLWriter(storage, ser)
 
-		event := NewEvent(uuid.NewV4(), 1, "TEST", 1)
+		event := NewEvent(uuid.NewV4(), time.Now(), 1, "TEST", 1)
 		payload, _ := ser.Serialize(event.Payload)
 
 		mock.ExpectExec("INSERT INTO Event").WithArgs(event.SourceID.String(), AnyTime{}, "TEST", event.Version, payload).WillReturnResult(sqlmock.NewResult(1, 1))
@@ -60,7 +60,7 @@ var _ = Describe("Reader", func() {
 		storage, _ := NewStorageFinalized(db, MSSQL, "Event")
 		wr := NewSQLWriter(storage, ser)
 
-		event := NewEvent(uuid.NewV4(), 1, "TEST", 1)
+		event := NewEvent(uuid.NewV4(), time.Now(), 1, "TEST", 1)
 		payload, _ := ser.Serialize(event.Payload)
 
 		mock.ExpectExec("INSERT INTO Event").WithArgs(event.SourceID.String(), AnyTime{}, "TEST", event.Version, payload).WillReturnError(errors.New("TEST"))
@@ -81,7 +81,7 @@ var _ = Describe("Reader", func() {
 		storage, _ := NewStorageFinalized(db, MSSQL, "Event")
 		wr := NewSQLWriter(storage, ser)
 
-		event := NewEvent(uuid.NewV4(), make(map[int]int), "TEST", 1)
+		event := NewEvent(uuid.NewV4(), time.Now(), make(map[int]int), "TEST", 1)
 
 		err := wr.Write(*event)
 		Expect(err).To(HaveOccurred())
@@ -120,7 +120,7 @@ func runDatabaseBenchmark(b *testing.B, storage *Storage) {
 	ser := NewJSONMarshaller()
 	wr := NewSQLWriter(storage, ser)
 
-	event := NewEvent(uuid.NewV4(), GetTestData(), "TEST", 1)
+	event := NewEvent(uuid.NewV4(), time.Now(), GetTestData(), "TEST", 1)
 
 	for n := 0; n < b.N; n++ {
 		err := wr.Write(*event)

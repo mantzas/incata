@@ -1,6 +1,8 @@
 package incata
 
 import (
+	"time"
+
 	. "github.com/mantzas/incata/mocks"
 	. "github.com/mantzas/incata/model"
 	. "github.com/onsi/ginkgo"
@@ -23,11 +25,11 @@ var _ = Describe("Retriever", func() {
 		var sourceID = uuid.NewV4()
 		var data = make([]Event, 0)
 
-		data = append(data, *NewEvent(uuid.NewV4(), GetTestData(), "TEST", 1))
-		data = append(data, *NewEvent(sourceID, GetTestData(), "TEST", 1))
-		data = append(data, *NewEvent(uuid.NewV4(), GetTestData(), "TEST", 1))
-		data = append(data, *NewEvent(sourceID, GetTestData(), "TEST", 1))
-		data = append(data, *NewEvent(uuid.NewV4(), GetTestData(), "TEST", 1))
+		data = append(data, *NewEvent(uuid.NewV4(), time.Now(), GetTestData(), "TEST", 1))
+		data = append(data, *NewEvent(sourceID, time.Now(), GetTestData(), "TEST", 1))
+		data = append(data, *NewEvent(uuid.NewV4(), time.Now(), GetTestData(), "TEST", 1))
+		data = append(data, *NewEvent(sourceID, time.Now(), GetTestData(), "TEST", 1))
+		data = append(data, *NewEvent(uuid.NewV4(), time.Now(), GetTestData(), "TEST", 1))
 
 		rd := NewMemoryReader(data)
 

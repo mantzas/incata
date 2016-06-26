@@ -71,7 +71,7 @@ func main() {
 
 		go func(index int) {
 			defer wg.Done()
-			event := model.NewEvent(sourceID, payload{Description: string(index)}, "TestEvent", 1)
+			event := model.NewEvent(sourceID, time.Now(), payload{Description: string(index)}, "TestEvent", 1)
 			ar, err := incata.NewAppender()
 			if err != nil {
 				log.Print(err)
