@@ -65,21 +65,21 @@ PostgreSQL Driver used:
 
 DB Table setup (Provide a table name)
 
-      CREATE TABLE {TableName}
+      CREATE TABLE {table_name}
       (
-        id bigint NOT NULL DEFAULT nextval('order_event_id_seq'::regclass),
+        id bigserial NOT NULL,
         source_id uuid NOT NULL,
         created timestamp with time zone NOT NULL,
         event_type character varying(250) NOT NULL,
         version integer NOT NULL,
         payload text NOT NULL,
-        CONSTRAINT pk_order_event_id PRIMARY KEY (id)
+        CONSTRAINT pk_{table_name}_id PRIMARY KEY (id)
       )
       WITH (
         OIDS=FALSE
       );
 
       CREATE INDEX ix_order_event_source_id
-        ON {TableName}
+        ON {table_name}
         USING btree
         (source_id);
