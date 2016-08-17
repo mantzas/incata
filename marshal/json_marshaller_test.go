@@ -29,13 +29,6 @@ var _ = Describe("Marshal", func() {
 		Expect(err).NotTo(HaveOccurred())
 	})
 
-	It("serialize unsupported data type fails", func() {
-		var m = make(map[int]int, 0)
-		_, err := NewJSONMarshaller().Serialize(m)
-
-		Expect(err).To(HaveOccurred())
-	})
-
 	It("deserialize json to test data and match", func() {
 		location, _ := time.LoadLocation("Europe/Athens")
 
