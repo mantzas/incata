@@ -2,6 +2,7 @@ package incata
 
 import (
 	"errors"
+
 	"github.com/mantzas/incata/model"
 	"github.com/mantzas/incata/reader"
 	"github.com/satori/go.uuid"
@@ -28,7 +29,7 @@ func SetupRetriever(reader reader.Reader) {
 func NewRetriever() (*EventRetriever, error) {
 
 	if rd == nil {
-		return nil, errors.New("Reader is not set up!")
+		return nil, errors.New("Retriever is not set up!")
 	}
 	return &EventRetriever{Reader: rd}, nil
 }

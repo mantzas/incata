@@ -1,6 +1,6 @@
 language: go
 go:
-  - 1.7
+  - 1.8
   - tip
 before_script:
     - go get -v github.com/onsi/ginkgo/ginkgo
