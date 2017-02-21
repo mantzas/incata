@@ -1,14 +1,53 @@
-hash: d18baf09225e164b2246c6b151bafedab4e5c63bea1706c34b4fe04486ac4021
-updated: 2016-03-03T21:00:01.3116846+02:00
+hash: 3fd4b844ac8aaa0aaa2eb49318306ad2bcd59e0a6193f2b8f1e49ae393c6f409
+updated: 2017-02-21T23:05:24.1550796+02:00
 imports:
-- name: github.com/DATA-DOG/go-sqlmock
-  version: 9958e5c69de03e97ec215b23f6fcae1f600c3fb6
 - name: github.com/denisenkom/go-mssqldb
-  version: 6e7f3d73dade2e5566f87d18c3a1d00d2ce33421
+  version: 9e40d9d5d325edfaa84d3374bfde6e1adce02d58
 - name: github.com/lib/pq
-  version: e182dc4027e2ded4b19396d638610f2653295f36
+  version: ba5d4f7a35561e22fbdf7a39aa0070f4d460cfc0
   subpackages:
   - oid
 - name: github.com/satori/go.uuid
-  version: e673fdd4dea8a7334adbbe7f57b7e4b00bdc5502
-devImports: []
+  version: 879c5887cd475cd7864858769793b2ceb0d44feb
+- name: golang.org/x/crypto
+  version: 453249f01cfeb54c3d549ddb75ff152ca243f9d8
+  subpackages:
+  - md4
+- name: golang.org/x/net
+  version: 6b27048ae5e6ad1ef927e72e437531493de612fe
+  subpackages:
+  - context
+testImports:
+- name: github.com/DATA-DOG/go-sqlmock
+  version: b983233bc0bbea4dc6e8ec8c8c923d935765ffec
+- name: github.com/onsi/ginkgo
+  version: 462326b1628e124b23f42e87a8f2750e3c4e2d24
+  subpackages:
+  - config
+  - extensions/table
+  - internal/codelocation
+  - internal/containernode
+  - internal/failer
+  - internal/leafnodes
+  - internal/remote
+  - internal/spec
+  - internal/specrunner
+  - internal/suite
+  - internal/testingtproxy
+  - internal/writer
+  - reporters
+  - reporters/stenographer
+  - types
+- name: github.com/onsi/gomega
+  version: a78ae492d53aad5a7a232d0d0462c14c400e3ee7
+  subpackages:
+  - format
+  - internal/assertion
+  - internal/asyncassertion
+  - internal/testingtsupport
+  - matchers
+  - matchers/support/goraph/bipartitegraph
+  - matchers/support/goraph/edge
+  - matchers/support/goraph/node
+  - matchers/support/goraph/util
+  - types
