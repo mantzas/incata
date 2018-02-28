@@ -1,8 +1,6 @@
 package storage_test
 
 import (
-	"database/sql/driver"
-
 	"github.com/DATA-DOG/go-sqlmock"
 	. "github.com/mantzas/incata/storage"
 	. "github.com/onsi/ginkgo"
@@ -31,7 +29,7 @@ var _ = Describe("Storage", func() {
 		dbInner, mock, _ := sqlmock.New()
 		storage, _ := NewStorageFinalized(dbInner, PostgreSQL, "Event")
 
-		var rows driver.Rows
+		var rows *sqlmock.Rows
 		mock.ExpectQuery("123").WithArgs(1, 2, 3).WillReturnRows(rows)
 
 		storage.Query("123", 1, 2, 3)

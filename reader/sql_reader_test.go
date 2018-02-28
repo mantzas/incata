@@ -33,7 +33,6 @@ var _ = Describe("Reader", func() {
 		var sourceID = uuid.NewV4()
 
 		rows := sqlmock.NewRows([]string{"Id", "SourceId", "Created", "EventType", "Version", "Payload"}).AddRow(1, uuid.NewV4().String(), time.Now(), "Test", 1, "123")
-		defer rows.Close()
 
 		mock.ExpectQuery("SELECT").WithArgs(sourceID.String()).WillReturnRows(rows)
 

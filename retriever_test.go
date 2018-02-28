@@ -1,6 +1,7 @@
 package incata
 
 import (
+	"errors"
 	"time"
 
 	. "github.com/mantzas/incata/mocks"
@@ -17,7 +18,7 @@ var _ = Describe("Retriever", func() {
 		SetupRetriever(nil)
 		retriever, err := NewRetriever()
 		Expect(retriever).To(BeNil())
-		Expect(err).To(MatchError("Reader is not set up!"))
+		Expect(err).To(MatchError(errors.New("retriever is not set up!")))
 	})
 
 	It("retrieve data succeeds", func() {

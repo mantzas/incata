@@ -29,7 +29,7 @@ func SetupRetriever(reader reader.Reader) {
 func NewRetriever() (*EventRetriever, error) {
 
 	if rd == nil {
-		return nil, errors.New("Retriever is not set up!")
+		return nil, errors.New("retriever is not set up!")
 	}
 	return &EventRetriever{Reader: rd}, nil
 }
