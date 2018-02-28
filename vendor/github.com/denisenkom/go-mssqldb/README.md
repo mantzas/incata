@@ -1,8 +1,15 @@
 # A pure Go MSSQL driver for Go's database/sql package
 
-## Install
+[![GoDoc](https://godoc.org/github.com/denisenkom/go-mssqldb?status.svg)](http://godoc.org/github.com/denisenkom/go-mssqldb)
+[![Build status](https://ci.appveyor.com/api/projects/status/jrln8cs62wj9i0a2?svg=true)](https://ci.appveyor.com/project/denisenkom/go-mssqldb)
+[![codecov](https://codecov.io/gh/denisenkom/go-mssqldb/branch/master/graph/badge.svg)](https://codecov.io/gh/denisenkom/go-mssqldb)
 
-    go get github.com/denisenkom/go-mssqldb
+## Install
+### Requirements
+
+* Go 1.7 or above
+
+`go get github.com/denisenkom/go-mssqldb`
 
 ## Connection Parameters and DSN
 
@@ -16,6 +23,9 @@
 * "connection timeout" - in seconds (default is 30)
 * "dial timeout" - in seconds (default is 5)
 * "keepAlive" - in seconds; 0 to disable (default is 0)
+* "packet size" - in bytes; 512 to 32767 (default is 4096)
+  * Encrypted connections have a maximum packet size of 16383 bytes
+  * Further information on usage: https://docs.microsoft.com/en-us/sql/database-engine/configure-windows/configure-the-network-packet-size-server-configuration-option
 * "log" - logging flags (default 0/no logging, 63 for full logging)
   *  1 log errors
   *  2 log messages

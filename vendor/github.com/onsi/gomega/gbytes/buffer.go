@@ -14,6 +14,7 @@ package gbytes
 import (
 	"errors"
 	"fmt"
+	"io"
 	"regexp"
 	"sync"
 	"time"
@@ -52,6 +53,23 @@ func BufferWithBytes(bytes []byte) *Buffer {
 }
 
 /*
+BufferReader returns a new gbytes.Buffer that wraps a reader.  The reader's contents are read into
+the Buffer via io.Copy
+*/
+func BufferReader(reader io.Reader) *Buffer {
+	b := &Buffer{
+		lock: &sync.Mutex{},
+	}
+
+	go func() {
+		io.Copy(b, reader)
+		b.Close()
+	}()
+
+	return b
+}
+
+/*
 Write implements the io.Writer interface
 */
 func (b *Buffer) Write(p []byte) (n int, err error) {
@@ -64,6 +82,30 @@ func (b *Buffer) Write(p []byte) (n int, err error) {
 
 	b.contents = append(b.contents, p...)
 	return len(p), nil
+}
+
+/*
+Read implements the io.Reader interface. It advances the
+cursor as it reads.
+
+Returns an error if called after Close.
+*/
+func (b *Buffer) Read(d []byte) (int, error) {
+	b.lock.Lock()
+	defer b.lock.Unlock()
+
+	if b.closed {
+		return 0, errors.New("attempt to read from closed buffer")
+	}
+
+	if uint64(len(b.contents)) <= b.readCursor {
+		return 0, io.EOF
+	}
+
+	n := copy(d, b.contents[b.readCursor:])
+	b.readCursor += uint64(n)
+
+	return n, nil
 }
 
 /*
@@ -198,7 +240,6 @@ func (b *Buffer) didSay(re *regexp.Regexp) (bool, []byte) {
 	if loc != nil {
 		b.readCursor += uint64(loc[1])
 		return true, copyOfUnreadBytes
-	} else {
-		return false, copyOfUnreadBytes
 	}
+	return false, copyOfUnreadBytes
 }

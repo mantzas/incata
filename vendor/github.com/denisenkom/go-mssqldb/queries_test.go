@@ -284,6 +284,51 @@ func TestTrans(t *testing.T) {
 	}
 }
 
+func TestNull(t *testing.T) {
+	conn := open(t)
+	defer conn.Close()
+
+	types := []string{
+		"tinyint",
+		"smallint",
+		"int",
+		"bigint",
+		"real",
+		"float",
+		"smallmoney",
+		"money",
+		"decimal",
+		//"varbinary(15)",
+		//"binary(15)",
+		"nvarchar(15)",
+		"nchar(15)",
+		"varchar(15)",
+		"char(15)",
+		"bit",
+		"smalldatetime",
+		"date",
+		"time",
+		"datetime",
+		"datetime2",
+		"datetimeoffset",
+		"uniqueidentifier",
+		"sql_variant",
+	}
+	for _, typ := range types {
+		row := conn.QueryRow("declare @x "+typ+" = ?; select @x", nil)
+		var retval interface{}
+		err := row.Scan(&retval)
+		if err != nil {
+			t.Error("Scan failed for type "+typ, err.Error())
+			return
+		}
+		if retval != nil {
+			t.Error("Value should be nil, but it is ", retval)
+			return
+		}
+	}
+}
+
 func TestParams(t *testing.T) {
 	longstr := strings.Repeat("x", 10000)
 	longbytes := make([]byte, 10000)
@@ -348,8 +393,11 @@ func TestShortTimeout(t *testing.T) {
 	}
 	checkConnStr(t)
 	SetLogger(testLogger{t})
-	dsn := makeConnStr() + ";Connection Timeout=2"
-	conn, err := sql.Open("mssql", dsn)
+	dsn := makeConnStr(t)
+	dsnParams := dsn.Query()
+	dsnParams.Set("Connection Timeout", "2")
+	dsn.RawQuery = dsnParams.Encode()
+	conn, err := sql.Open("mssql", dsn.String())
 	if err != nil {
 		t.Fatal("Open connection failed:", err.Error())
 	}
@@ -741,33 +789,6 @@ func TestBug32(t *testing.T) {
 	}
 }
 
-/*
-func TestLogging(t *testing.T) {
-	flags := log.Flags()
-	defer func() {
-		log.SetFlags(flags)
-		log.SetOutput(os.Stderr)
-	}()
-	log.SetFlags(0)
-	var b bytes.Buffer
-	log.SetOutput(&b)
-
-	dsn := makeConnStr() + ";Log=2"
-	conn, err := sql.Open("mssql", dsn)
-	if err != nil {
-		t.Fatal("Open connection failed:", err.Error())
-	}
-	defer conn.Close()
-	_, err = conn.Exec("print 'test'")
-	if err != nil {
-		t.Fatal("Exec print failed", err.Error())
-	}
-	if b.String() != "test\n" {
-		t.Fatal("logging test failed, got", b.String())
-	}
-}
-*/
-
 func TestIgnoreEmptyResults(t *testing.T) {
 	conn := open(t)
 	defer conn.Close()
@@ -791,7 +812,10 @@ func TestIgnoreEmptyResults(t *testing.T) {
 func TestMssqlStmt_SetQueryNotification(t *testing.T) {
 	checkConnStr(t)
 	mssqldriver := driverWithProcess(t)
-	cn, err := mssqldriver.Open(makeConnStr())
+	cn, err := mssqldriver.Open(makeConnStr(t).String())
+	if err != nil {
+		t.Fatalf("failed to open connection: %v", err)
+	}
 	stmt, err := cn.Prepare("SELECT 1")
 	if err != nil {
 		t.Error("Connection failed", err)
@@ -851,13 +875,13 @@ func TestConnectionClosing(t *testing.T) {
 
 		stmt, err := conn.Query("select 1")
 		if err != nil {
-			t.Errorf("Query failed with unexpected error %s", err)
+			t.Fatalf("Query failed with unexpected error %s", err)
 		}
 		for stmt.Next() {
 			var val interface{}
 			err := stmt.Scan(&val)
 			if err != nil {
-				t.Errorf("Query failed with unexpected error %s", err)
+				t.Fatalf("Query failed with unexpected error %s", err)
 			}
 		}
 	}
@@ -866,7 +890,7 @@ func TestConnectionClosing(t *testing.T) {
 func TestBeginTranError(t *testing.T) {
 	checkConnStr(t)
 	drv := driverWithProcess(t)
-	conn, err := drv.open(makeConnStr())
+	conn, err := drv.open(makeConnStr(t).String())
 	if err != nil {
 		t.Fatalf("Open failed with error %v", err)
 	}
@@ -877,12 +901,12 @@ func TestBeginTranError(t *testing.T) {
 
 	ctx := context.Background()
 	_, err = conn.begin(ctx, isolationSnapshot)
-	if err != driver.ErrBadConn {
-		t.Errorf("begin should fail with ErrBadConn but it returned %v", err)
+	if err == nil || conn.connectionGood == true {
+		t.Errorf("begin should fail as a bad connection, err=%v", err)
 	}
 
 	// reopen connection
-	conn, err = drv.open(makeConnStr())
+	conn, err = drv.open(makeConnStr(t).String())
 	if err != nil {
 		t.Fatalf("Open failed with error %v", err)
 	}
@@ -900,12 +924,16 @@ func TestBeginTranError(t *testing.T) {
 	case driver.ErrBadConn:
 		t.Error("processBeginResponse should fail with error different from ErrBadConn but it did")
 	}
+
+	if conn.connectionGood {
+		t.Fatal("Connection should be in a bad state")
+	}
 }
 
 func TestCommitTranError(t *testing.T) {
 	checkConnStr(t)
 	drv := driverWithProcess(t)
-	conn, err := drv.open(makeConnStr())
+	conn, err := drv.open(makeConnStr(t).String())
 	if err != nil {
 		t.Fatalf("Open failed with error %v", err)
 	}
@@ -916,12 +944,12 @@ func TestCommitTranError(t *testing.T) {
 
 	ctx := context.Background()
 	err = conn.Commit()
-	if err != driver.ErrBadConn {
-		t.Errorf("begin should fail with ErrBadConn but it returned %v", err)
+	if err == nil || conn.connectionGood {
+		t.Errorf("begin should fail and set the connection to bad, but it returned %v", err)
 	}
 
 	// reopen connection
-	conn, err = drv.open(makeConnStr())
+	conn, err = drv.open(makeConnStr(t).String())
 	if err != nil {
 		t.Fatalf("Open failed with error %v", err)
 	}
@@ -940,8 +968,12 @@ func TestCommitTranError(t *testing.T) {
 		t.Error("simpleProcessResp should fail with error different from ErrBadConn but it did")
 	}
 
+	if conn.connectionGood {
+		t.Fatal("Connection should be in a bad state")
+	}
+
 	// reopen connection
-	conn, err = drv.open(makeConnStr())
+	conn, err = drv.open(makeConnStr(t).String())
 	defer conn.Close()
 	if err != nil {
 		t.Fatalf("Open failed with error %v", err)
@@ -959,7 +991,7 @@ func TestCommitTranError(t *testing.T) {
 func TestRollbackTranError(t *testing.T) {
 	checkConnStr(t)
 	drv := driverWithProcess(t)
-	conn, err := drv.open(makeConnStr())
+	conn, err := drv.open(makeConnStr(t).String())
 	if err != nil {
 		t.Fatalf("Open failed with error %v", err)
 	}
@@ -970,12 +1002,12 @@ func TestRollbackTranError(t *testing.T) {
 
 	ctx := context.Background()
 	err = conn.Rollback()
-	if err != driver.ErrBadConn {
-		t.Errorf("Rollback should fail with ErrBadConn but it returned %v", err)
+	if err == nil || conn.connectionGood {
+		t.Errorf("Rollback should fail and set connection to bad but it returned %v", err)
 	}
 
 	// reopen connection
-	conn, err = drv.open(makeConnStr())
+	conn, err = drv.open(makeConnStr(t).String())
 	if err != nil {
 		t.Fatalf("Open failed with error %v", err)
 	}
@@ -994,8 +1026,12 @@ func TestRollbackTranError(t *testing.T) {
 		t.Error("simpleProcessResp should fail with error different from ErrBadConn but it did")
 	}
 
+	if conn.connectionGood {
+		t.Fatal("Connection should be in a bad state")
+	}
+
 	// reopen connection
-	conn, err = drv.open(makeConnStr())
+	conn, err = drv.open(makeConnStr(t).String())
 	defer conn.Close()
 	if err != nil {
 		t.Fatalf("Open failed with error %v", err)
@@ -1013,7 +1049,7 @@ func TestRollbackTranError(t *testing.T) {
 func TestSendQueryErrors(t *testing.T) {
 	checkConnStr(t)
 	drv := driverWithProcess(t)
-	conn, err := drv.open(makeConnStr())
+	conn, err := drv.open(makeConnStr(t).String())
 	if err != nil {
 		t.FailNow()
 	}
@@ -1035,7 +1071,7 @@ func TestSendQueryErrors(t *testing.T) {
 
 	// should fail because connection is closed
 	_, err = stmt.Query([]driver.Value{})
-	if err != driver.ErrBadConn {
+	if err == nil || stmt.c.connectionGood {
 		t.Fail()
 	}
 
@@ -1045,7 +1081,7 @@ func TestSendQueryErrors(t *testing.T) {
 	}
 	// should fail because connection is closed
 	_, err = stmt.Query([]driver.Value{int64(1)})
-	if err != driver.ErrBadConn {
+	if err == nil || stmt.c.connectionGood {
 		t.Fail()
 	}
 }
@@ -1053,7 +1089,7 @@ func TestSendQueryErrors(t *testing.T) {
 func TestProcessQueryErrors(t *testing.T) {
 	checkConnStr(t)
 	drv := driverWithProcess(t)
-	conn, err := drv.open(makeConnStr())
+	conn, err := drv.open(makeConnStr(t).String())
 	if err != nil {
 		t.Fatal("open expected to succeed, but it failed with", err)
 	}
@@ -1075,12 +1111,16 @@ func TestProcessQueryErrors(t *testing.T) {
 	if err == driver.ErrBadConn {
 		t.Error("processQueryResponse expected to fail with error other than ErrBadConn but it failed with it")
 	}
+
+	if conn.connectionGood {
+		t.Fatal("Connection should be in a bad state")
+	}
 }
 
 func TestSendExecErrors(t *testing.T) {
 	checkConnStr(t)
 	drv := driverWithProcess(t)
-	conn, err := drv.open(makeConnStr())
+	conn, err := drv.open(makeConnStr(t).String())
 	if err != nil {
 		t.FailNow()
 	}
@@ -1102,7 +1142,7 @@ func TestSendExecErrors(t *testing.T) {
 
 	// should fail because connection is closed
 	_, err = stmt.Exec([]driver.Value{})
-	if err != driver.ErrBadConn {
+	if err == nil || stmt.c.connectionGood {
 		t.Fail()
 	}
 
@@ -1112,7 +1152,7 @@ func TestSendExecErrors(t *testing.T) {
 	}
 	// should fail because connection is closed
 	_, err = stmt.Exec([]driver.Value{int64(1)})
-	if err != driver.ErrBadConn {
+	if err == nil || stmt.c.connectionGood {
 		t.Fail()
 	}
 }

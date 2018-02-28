@@ -1,7 +1,6 @@
 language: go
 go:
-  - 1.8
-  - tip
+  - 1.9.x
 before_script:
     - go get -v github.com/onsi/ginkgo/ginkgo
     - go get -v github.com/onsi/gomega

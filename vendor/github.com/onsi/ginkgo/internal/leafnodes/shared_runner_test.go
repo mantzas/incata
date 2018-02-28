@@ -6,7 +6,6 @@ import (
 	. "github.com/onsi/gomega"
 
 	"reflect"
-	"runtime"
 	"time"
 
 	"github.com/onsi/ginkgo/internal/codelocation"
@@ -96,6 +95,24 @@ func SynchronousSharedRunnerBehaviors(build func(body interface{}, timeout time.
 				Ω(failure.ForwardedPanic).Should(Equal("ack!"))
 			})
 		})
+
+		Context("when a panic occurs with a nil value", func() {
+			BeforeEach(func() {
+				outcome, failure = build(func() {
+					didRun = true
+					innerCodeLocation = codelocation.New(0)
+					panic(nil)
+				}, 0, failer, componentCodeLocation).Run()
+			})
+
+			It("should return the nil-valued panic", func() {
+				Ω(didRun).Should(BeTrue())
+
+				Ω(outcome).Should(Equal(types.SpecStatePanicked))
+				Ω(failure.ForwardedPanic).Should(Equal("<nil>"))
+			})
+		})
+
 	})
 }
 
@@ -129,17 +146,15 @@ func AsynchronousSharedRunnerBehaviors(build func(body interface{}, timeout time
 
 		Context("when running", func() {
 			It("should run the function as a goroutine, and block until it's done", func() {
-				initialNumberOfGoRoutines := runtime.NumGoroutine()
-				numberOfGoRoutines := 0
+				proveAsync := make(chan bool)
 
 				build(func(done Done) {
 					didRun = true
-					numberOfGoRoutines = runtime.NumGoroutine()
+					proveAsync <- true
 					close(done)
 				}, timeoutDuration, failer, componentCodeLocation).Run()
 
-				Ω(didRun).Should(BeTrue())
-				Ω(numberOfGoRoutines).Should(BeNumerically(">=", initialNumberOfGoRoutines+1))
+				Eventually(proveAsync).Should(Receive(Equal(true)))
 			})
 		})
 
@@ -230,6 +245,23 @@ func AsynchronousSharedRunnerBehaviors(build func(body interface{}, timeout time
 				Ω(failure.ForwardedPanic).Should(Equal("ack!"))
 			})
 		})
+
+		Context("when the function panics with a nil value", func() {
+			BeforeEach(func() {
+				outcome, failure = build(func(done Done) {
+					didRun = true
+					innerCodeLocation = codelocation.New(0)
+					panic(nil)
+				}, 100*time.Millisecond, failer, componentCodeLocation).Run()
+			})
+
+			It("should return the nil-valued panic", func() {
+				Ω(didRun).Should(BeTrue())
+
+				Ω(outcome).Should(Equal(types.SpecStatePanicked))
+				Ω(failure.ForwardedPanic).Should(Equal("<nil>"))
+			})
+		})
 	})
 }
 
@@ -237,13 +269,11 @@ func InvalidSharedRunnerBehaviors(build func(body interface{}, timeout time.Dura
 	var (
 		failer                *Failer.Failer
 		componentCodeLocation types.CodeLocation
-		innerCodeLocation     types.CodeLocation
 	)
 
 	BeforeEach(func() {
 		failer = Failer.New()
 		componentCodeLocation = codelocation.New(0)
-		innerCodeLocation = codelocation.New(0)
 	})
 
 	Describe("invalid functions", func() {

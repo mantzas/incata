@@ -3,6 +3,7 @@ package matchers_test
 import (
 	"errors"
 	"fmt"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	. "github.com/onsi/gomega/matchers"
@@ -41,6 +42,19 @@ var _ = Describe("MatchErrorMatcher", func() {
 			Ω(customErr).Should(MatchError("an error"))
 		})
 
+		Context("when passed a matcher", func() {
+			It("should pass if the matcher passes against the error string", func() {
+				err := errors.New("error 123 abc")
+
+				Ω(err).Should(MatchError(MatchRegexp(`\d{3}`)))
+			})
+
+			It("should fail if the matcher fails against the error string", func() {
+				err := errors.New("no digits")
+				Ω(err).ShouldNot(MatchError(MatchRegexp(`\d`)))
+			})
+		})
+
 		It("should fail when passed anything else", func() {
 			actualErr := errors.New("an error")
 			_, err := (&MatchErrorMatcher{
@@ -77,4 +91,17 @@ var _ = Describe("MatchErrorMatcher", func() {
 			Ω(err).Should(HaveOccurred())
 		})
 	})
+
+	Context("when passed an error that is also a string", func() {
+		It("should use it as an error", func() {
+			var e mockErr = "mockErr"
+
+			// this fails if the matcher casts e to a string before comparison
+			Ω(e).Should(MatchError(e))
+		})
+	})
 })
+
+type mockErr string
+
+func (m mockErr) Error() string { return string(m) }
